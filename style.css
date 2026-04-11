@@ -1,0 +1,454 @@
+/* Gradientes feitos no site https://cssgradient.io */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 30px;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 1400px;
+    width: 100%;
+}
+
+/* PAINEL LATERAL ESQUERDO */
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.blocos-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.blocos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+}
+
+.bloco {
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: grab;
+    text-align: center;
+    transition: all 0.3s ease;
+    user-select: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    touch-action: none;
+}
+
+.bloco:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.bloco:active {
+    cursor: grabbing;
+}
+
+.bloco-um-quarto {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bloco-meia {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.bloco-um-oitavo {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.bloco-um-doze-avos {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.info-blocos {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #667eea;
+}
+
+/* PAINEL CENTRAL */
+.center-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.titulo-principal {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.subtitulo {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.info-fase {
+    background: #f0f3ff;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.info-fase div {
+    font-size: 14px;
+    color: #333;
+    margin: 5px 0;
+}
+
+.target-label {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.engenheiro {
+    text-align: center;
+    font-size: 60px;
+    margin: 20px 0;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.viga-container {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    border: 2px dashed #ccc;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.viga-container.over {
+    background: #e8f5e9;
+    border-color: #4caf50;
+}
+
+.viga-construida {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 60px;
+}
+
+.bloco-colocado {
+    padding: 10px 8px;
+    border-radius: 4px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bloco-colocado:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.placeholder-text {
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+}
+
+.progresso-container {
+    margin-top: 20px;
+}
+
+.progresso-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.progresso-bar {
+    width: 100%;
+    height: 24px;
+    background: #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progresso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* PAINEL DIREITO */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.tamanho-alvo {
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.tamanho-alvo-label {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-bottom: 10px;
+}
+
+.tamanho-alvo-value {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.barra-alvo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    background: white;
+    padding: 25px 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.escala-visual {
+    flex: 1;
+    height: 40px;
+    background: linear-gradient(90deg, #f0f0f0 0%, #f0f0f0 100%);
+    border-radius: 5px;
+    position: relative;
+    border: 2px solid #ddd;
+    overflow: hidden;
+}
+
+.escala-preenchida {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.marcadores {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 10px;
+    color: #666;
+}
+
+.marcador {
+    text-align: center;
+}
+
+.botoes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-limpar {
+    background: #ff6b6b;
+    color: white;
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+}
+
+.btn-limpar:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
+}
+
+.btn-proxima {
+    background: #51cf66;
+    color: white;
+    box-shadow: 0 4px 8px rgba(81, 207, 102, 0.3);
+    display: none;
+}
+
+.btn-proxima:hover:not(:disabled) {
+    background: #40c057;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(81, 207, 102, 0.4);
+}
+
+.btn-proxima.active {
+    display: block;
+}
+
+.btn-proxima:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.placar {
+    background: #f0f3ff;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    text-align: center;
+}
+
+.placar-titulo {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.placar-valor {
+    font-size: 32px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.status-mensagem {
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    display: none;
+}
+
+.status-mensagem.sucesso {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #28a745;
+    display: block;
+    animation: slideIn 0.5s ease;
+}
+
+.status-mensagem.quase {
+    background: #fff3cd;
+    color: #856404;
+    border: 2px solid #ffc107;
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsivo */
+@media (max-width: 1200px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .titulo-principal {
+        font-size: 24px;
+    }
+
+    .tamanho-alvo-value {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .blocos-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .bloco {
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .viga-construida {
+        gap: 2px;
+    }
+
+    .bloco-colocado {
+        font-size: 10px;
+        padding: 8px 6px;
+    }
+}
