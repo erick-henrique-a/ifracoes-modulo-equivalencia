@@ -1,6 +1,6 @@
 class JogoFracoes {
     constructor() {
-        this.faseAtual = 0;
+        this.faseAtual = 1;
         this.fasesCompletadas = 0;
         this.vigaAtual = [];
         
@@ -28,49 +28,54 @@ class JogoFracoes {
         this.inicializar();
     }
 
-    inicializar() {
-        this.proximaFase();
+    inicializar() {    
         this.renderizarBlocos();
         this.configurarDragAndDrop();
+        this.atualizarUI();
     }
 
     proximaFase() {
         if (this.faseAtual < this.fases.length) {
-            this.vigaAtual = [];
-            this.atualizarUI();
-            this.faseAtual++;
-        } else {
+            if (this.vigaAtual.length > 0 || this.fasesCompletadas > 0) {
+                this.faseAtual++; // Só incrementa se não for a primeira carga
+            } 
+        this.vigaAtual = [];
+        document.getElementById('btn-proxima').classList.remove('active');
+        this.atualizarUI();
+        }else {
             alert('🎉 Parabéns! Você completou todas as fases!');
-            this.faseAtual = 0;
+            this.faseAtual = 1;
             this.fasesCompletadas = 0;
             this.proximaFase();
         }
     }
 
     renderizarBlocos() {
-        const container = document.getElementById('blocos-container');
-        container.innerHTML = '';
+    const container = document.getElementById('blocos-container');
+    container.innerHTML = '';
 
-        this.tiposBlocos.forEach((tipo, index) => {
-            const bloco = document.createElement('div');
-            bloco.textContent = tipo.label;
-            bloco.className = `bloco ${tipo.classe}`;
-            bloco.setAttribute('data-fracao', tipo.fracao);
-            bloco.setAttribute('data-label', tipo.label);
-            bloco.setAttribute('draggable', 'true');
-            bloco.setAttribute('data-id', `bloco-modelo-${index}`);
-            
-            bloco.addEventListener('dragstart', (e) => {
-                e.dataTransfer.effectAllowed = 'copy';
-                e.dataTransfer.setData('tipo', JSON.stringify({
-                    fracao: parseFloat(tipo.fracao),
-                    label: tipo.label,
-                    classe: tipo.classe
-                }));
-            });
-
-            container.appendChild(bloco);
+    this.tiposBlocos.forEach((tipo, index) => {
+        const bloco = document.createElement('div');
+        bloco.textContent = tipo.label;
+        bloco.innerHTML = this.formatarFracaoHTML(tipo.label);
+        bloco.className = `bloco ${tipo.classe}`;
+        
+        // Aplica a largura proporcional ao valor da fração
+        // Se a fração é 1/2, a largura será 50% do container pai
+        bloco.style.height = `${tipo.fracao * 100}%`;
+        bloco.style.width = '60px';
+        
+        bloco.setAttribute('draggable', 'true');
+        bloco.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('tipo', JSON.stringify({
+                fracao: tipo.fracao,
+                label: tipo.label,
+                classe: tipo.classe
+            }));
         });
+
+        container.appendChild(bloco);
+    });
     }
 
     configurarDragAndDrop() {
@@ -119,14 +124,36 @@ class JogoFracoes {
 
         // Atualizar fase
         document.getElementById('fase-numero').textContent = faseAtual.numero;
-        document.getElementById('target-display').textContent = faseAtual.descricao;
-        document.getElementById('target-value').textContent = faseAtual.descricao;
+        document.getElementById('target-display').innerHTML = this.formatarFracaoHTML(faseAtual.descricao);
+        document.getElementById('target-value').innerHTML = this.formatarFracaoHTML(faseAtual.descricao);
 
         // Atualizar placar
         document.getElementById('placar-valor').textContent = this.fasesCompletadas;
-
+        
         // Calcular total da viga
         const totalViga = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
+        // Atualizar a Linha Alvo Visual
+        const linhaAlvo = document.getElementById('linha-alvo');
+        if (linhaAlvo) {
+            linhaAlvo.style.height = `${faseAtual.alvo * 100}%`;
+        
+        // Brilhar verde se atingir o alvo exato
+            if (Math.abs(totalViga - faseAtual.alvo) < 0.001) {
+                linhaAlvo.classList.add('alvo-atingido');
+            } else {
+                linhaAlvo.classList.remove('alvo-atingido');
+            }
+        }
+        
+        const vigaContainer = document.getElementById('viga-container');
+        if (vigaContainer) {
+        // Viga racha (fica vermelha) se passar de 1 inteiro
+            if (totalViga > 1.001) {
+                vigaContainer.classList.add('sobrecarga');
+            } else {
+                vigaContainer.classList.remove('sobrecarga');
+            }
+        }
 
         // Atualizar viga construída
         this.renderizarVigaConstruida(totalViga);
@@ -135,35 +162,44 @@ class JogoFracoes {
         this.atualizarProgresso(totalViga, faseAtual.alvo);
 
         // Atualizar escala visual
-        this.atualizarEscalaVisual(totalViga, faseAtual.alvo);
+        // this.atualizarEscalaVisual(totalViga, faseAtual.alvo);
 
         // Atualizar status
         this.atualizarStatus(totalViga, faseAtual.alvo);
+        
     }
 
     renderizarVigaConstruida(total) {
-        const vigaConstruida = document.getElementById('viga-construida');
-        
-        if (this.vigaAtual.length === 0) {
-            vigaConstruida.innerHTML = '<div class="placeholder-text">Arraste os blocos aqui para construir!</div>';
-            return;
-        }
+    const vigaConstruida = document.getElementById('viga-construida');
+    
+    if (this.vigaAtual.length === 0) {
+        vigaConstruida.innerHTML = '<div class="placeholder-text">Arraste os blocos aqui para construir!</div>';
+        return;
+    }
 
-        vigaConstruida.innerHTML = this.vigaAtual.map(bloco => `
+     // Gera o HTML de todos os blocos colocados
+    const blocosHTML = this.vigaAtual.map(bloco => {
+        // Multiplicamos por 100 para ter a porcentagem relativa ao "inteiro" (1.0)
+        const alturaPercentual = bloco.fracao * 100;
+        const labelFormatado = this.formatarFracaoHTML ? this.formatarFracaoHTML(bloco.label) : bloco.label;
+        return `
             <div class="bloco-colocado ${bloco.classe}" 
+                 style="height: ${alturaPercentual}%; width: 100%;" 
                  onclick="game.removerBlocoViga(${bloco.id})"
                  title="Clique para remover">
-                ${bloco.label}
+                ${labelFormatado}
             </div>
-        `).join('');
+        `;
+    }).join('');
+
+        vigaConstruida.innerHTML = blocosHTML;
 
         // Adicionar exibição do total
         const totalDiv = document.createElement('div');
-        totalDiv.style.marginLeft = '10px';
-        totalDiv.style.fontSize = '14px';
-        totalDiv.style.fontWeight = 'bold';
-        totalDiv.style.color = '#333';
-        totalDiv.textContent = `= ${this.formatarFracao(total)}`;
+        totalDiv.className = "total-viga-flutuante";
+        const textoDoTotal = this.formatarFracao(total); // Primeiro converte o número para string (ex: "3/4")
+        totalDiv.innerHTML = `<span> = </span> ${this.formatarFracaoHTML(textoDoTotal)}`; // Depois transforma em HTML empilhado
+        
         vigaConstruida.appendChild(totalDiv);
     }
 
@@ -280,6 +316,17 @@ class JogoFracoes {
         }
 
         return valor.toFixed(2);
+    }
+
+    formatarFracaoHTML(texto) {
+    if (!texto.includes('/')) return texto;
+    const [num, den] = texto.split('/');
+    return `
+        <span class="fracao-estilizada">
+            <span class="numerador">${num}</span>
+            <span class="denominador">${den}</span>
+        </span>
+    `;
     }
 }
 

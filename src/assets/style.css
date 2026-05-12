@@ -43,31 +43,46 @@ body {
 }
 
 .blocos-container {
+    height: 400px; /* Mesma altura da viga-container */
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row; /* Coloca um ao lado do outro */
+    flex-wrap: wrap;      /*Permite quebrar linha se tiver muitos blocos */
+    gap: 10px;
     background: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
-    border: 2px solid #e0e0e0;
+    align-items: flex-end; /* ALINHA TODOS PELA BASE */
+    justify-content: center;
+    height: 400px;
 }
 
 .bloco {
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: horizontal-tb; /* Texto em pé se o bloco for muito fino */
+    text-orientation: horizontal;
+    border-radius: 4px;
     cursor: grab;
-    text-align: center;
-    transition: all 0.3s ease;
-    user-select: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    touch-action: none;
+}
+
+.linha-alvo {
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    bottom: 0; /* Começa da base */
+    height: 0; /* Controlado pelo JS */
+    border-top: 3px dashed #764ba2;
+    background: rgba(118, 75, 162, 0.1);
+    z-index: 1;
+    pointer-events: none;
+    transition: height 0.3s ease;
 }
 
 .bloco:hover {
-    transform: scale(1.05);
+    filter: brightness(1.2);
+    transform: scale(1.01);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -154,15 +169,14 @@ body {
 }
 
 .viga-container {
-    background: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
-    border: 2px dashed #ccc;
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 120px;
+    height: 400px; 
+    margin: 0 auto;
+    background: #eee;
+    border: 3px solid #333;
     position: relative;
+    display: flex;
+    flex-direction: column-reverse; /* FAZ EMPILHAR DE BAIXO PARA CIMA */
     overflow: hidden;
 }
 
@@ -172,28 +186,23 @@ body {
 }
 
 .viga-construida {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
     width: 100%;
-    min-height: 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse; /* Garante que os blocos novos fiquem embaixo */
 }
 
 .bloco-colocado {
-    padding: 10px 8px;
-    border-radius: 4px;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(255,255,255,0.4);
+    width: 100% !important; /* Garante que ocupe a largura da viga */
 }
 
 .bloco-colocado:hover {
-    transform: scale(1.1);
+    filter: brightness(1.2);
+    transform: scale(1.01);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -276,7 +285,7 @@ body {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.escala-visual {
+/* .escala-visual {
     flex: 1;
     height: 40px;
     background: linear-gradient(90deg, #f0f0f0 0%, #f0f0f0 100%);
@@ -284,7 +293,7 @@ body {
     position: relative;
     border: 2px solid #ddd;
     overflow: hidden;
-}
+} */
 
 .escala-preenchida {
     height: 100%;
@@ -451,4 +460,73 @@ button {
         font-size: 10px;
         padding: 8px 6px;
     }
+}
+
+/* Estilo para a fração empilhada */
+.fracao-estilizada {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1.1;
+    font-size: 0.9em;
+}
+
+.numerador {
+    border-bottom: 1px solid currentColor; /* Linha da fração */
+    padding: 0 2px;
+}
+
+.denominador {
+    padding: 0 2px;
+}
+
+/* Estilo para o resultado da soma acima da viga */
+.total-viga-flutuante {
+    position: absolute;
+    top: -80px; /* Empurra para cima, fora da borda da viga */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza perfeitamente */
+    width: 100px;
+    text-align: center;
+    background-color: white;
+    padding: 5px;
+    border-radius: 8px;
+    border: 2px solid #764ba2;
+    color: #333;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+/* Efeito de brilho quando atinge o alvo exato */
+.linha-alvo.alvo-atingido {
+    border-top: 4px solid #51cf66; /* Verde brilhante */
+    background: rgba(81, 207, 102, 0.3);
+    box-shadow: 0 0 15px #51cf66;
+    animation: pulse-green 1.5s infinite;
+}
+@keyframes pulse-green {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Efeito de viga sobrecarregada (passou de 1) */
+.viga-container.sobrecarga {
+    border: 4px solid #ff0000 !important;
+    background-color: #ffeaea;
+    box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.2);
+    animation: shake 0.2s ease-in-out 0s 2;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
 }
