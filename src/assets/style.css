@@ -90,21 +90,40 @@ body {
     cursor: grabbing;
 }
 
+/* FAMÍLIA DOS AZUIS (Múltiplos de 2: 2, 4, 8) */
+.bloco-meia {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
 .bloco-um-quarto {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
-
-.bloco-meia {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
 .bloco-um-oitavo {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
-.bloco-um-doze-avos {
+/* FAMÍLIA DOS QUENTES (Múltiplos de 3: 3, 6, 9) */
+.bloco-um-terco {
+    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+}
+.bloco-um-sexto {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+}
+.bloco-um-nono {
+    background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+}
+
+/* FAMÍLIA DOS VERDES (Múltiplos de 5: 5, 10) */
+.bloco-um-quinto {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+.bloco-um-dez-avos {
     background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 }
+/* Bloco um sétimo*/
+.bloco-um-setimo {
+    background: linear-gradient(135deg, #00b09b 0%, #df4dae 100%);
+}
+
 
 .info-blocos {
     font-size: 12px;
@@ -469,11 +488,18 @@ button {
     align-items: center;
     vertical-align: middle;
     line-height: 1.1;
-    font-size: 0.9em;
+    font-size: 1.4rem; /* Aumenta o tamanho  */
+    font-weight: 800;  /* Deixa em negrito bem forte */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Sombra leve para destacar no gradiente */
+}
+
+.bloco-um-dez-avos .fracao-estilizada,
+.bloco-um-nono .fracao-estilizada {
+    font-size: 1.1rem;
 }
 
 .numerador {
-    border-bottom: 1px solid currentColor; /* Linha da fração */
+    border-bottom: 2px solid currentColor; /* Linha da fração */
     padding: 0 2px;
 }
 
@@ -529,4 +555,45 @@ button {
     25% { transform: translateX(5px); }
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
+}
+
+/* Adicione ou ajuste estas regras */
+.blocos-container {
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: wrap;      
+    gap: 15px; /* Aumentado para parecerem peças soltas */
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    align-items: flex-end; 
+    justify-content: center;
+    min-height: 400px;
+    border: 2px dashed #ccc; /* Visual de "caixa de peças" */
+}
+
+.bloco {
+    transition: transform 0.2s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2); /* Efeito 3D de peça */
+}
+
+.bloco:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+/* Classe para o bloco que já foi usado e está na viga */
+
+.bloco.usado {
+    background-color: #e0e0e0 !important; /* Cor cinza sólida */
+    background-image: none !important;    /* REMOVE o gradiente colorido */
+    border: 2px dashed #bbb !important;
+    opacity: 0.5 !important;
+    cursor: default !important;
+    pointer-events: none;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.bloco.usado .fracao-estilizada {
+    display: none !important; /* Garante que o texto suma */
 }

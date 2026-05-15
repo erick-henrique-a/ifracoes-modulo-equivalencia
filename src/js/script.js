@@ -6,23 +6,47 @@ class JogoFracoes {
         
         // Definição das fases (cada fase tem um alvo em frações)
         this.fases = [
-            { numero: 1, alvo: 3/4, descricao: '3/4' },
-            { numero: 2, alvo: 1, descricao: '4/4' },
-            { numero: 3, alvo: 7/8, descricao: '7/8' },
-            { numero: 4, alvo: 11/12, descricao: '11/12' },
-            { numero: 5, alvo: 5/8, descricao: '5/8' },
-            { numero: 6, alvo: 13/16, descricao: '13/16' },
+            // Agora cada fase tem seu próprio "estoque" de blocos (array de strings)
+            //Teste: {numero: 1, alvo: 1, descricao: '1', estoque: ['1/2', '1/3', '1/4', '1/5', '1/6', '1/7', '1/8', '1/9', '1/10'] },
+            // Nível 1
+            { numero: 1, alvo: 1, descricao: '1', estoque: ['1/2', '1/2', '1/2'] },
+            { numero: 2, alvo: 1, descricao: '1', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4', '1/4'] },
+            { numero: 3, alvo: 3/4, descricao: '3/4', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
+            { numero: 4, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
+            { numero: 5, alvo: 1, descricao: '1', estoque: ['1/2', '1/4', '1/4','1/4'] },
+
+            //Nível 2: Introduzir 1/8
+            { numero: 6, alvo: 1, descricao: '1', estoque: ['1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8'] },
+            { numero: 7, alvo: 1/4, descricao: '1/4', estoque: ['1/2', '1/8', '1/8','1/8'] },
+            { numero: 8, alvo: 3/8, descricao: '3/8', estoque: ['1/2', '1/8', '1/8', '1/8','1/8'] },
+            { numero: 9, alvo: 1/2, descricao: '1/2', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },          
+            { numero: 10, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/8', '1/8', '1/8'] },            
+            { numero: 11, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4', '1/8'] },
+            { numero: 12, alvo: 3/8, descricao: '3/8', estoque: ['1/4', '1/8', '1/4', '1/2'] },
+            { numero: 13, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8','1/8'] },
+            { numero: 14, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/4', '1/8'] },
+            { numero: 15, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/4', '1/4', '1/4'] },
+            { numero: 16, alvo: 3/4, descricao: '3/4', estoque: ['1/8', '1/8', '1/2', '1/2'] },
+            
+            // ... adicione as outras fases seguindo este padrão
+            //Nível 3: Introduzir 1/3, 1/6, 1/9
+
+            
         ];
 
         // Tipos de blocos disponíveis
-        this.tiposBlocos = [
-            { fracao: 1/4, label: '1/4', classe: 'bloco-um-quarto', cor: '#667eea' },
-            { fracao: 1/2, label: '1/2', classe: 'bloco-meia', cor: '#f5576c' },
-            { fracao: 1/4, label: '1/4', classe: 'bloco-um-quarto', cor: '#667eea' },
-            { fracao: 1/8, label: '1/8', classe: 'bloco-um-oitavo', cor: '#00f2fe' },
-            { fracao: 1/8, label: '1/8', classe: 'bloco-um-oitavo', cor: '#00f2fe' },
-            { fracao: 1/12, label: '1/12', classe: 'bloco-um-doze-avos', cor: '#38f9d7' },
-        ];
+        this.tiposBlocos = {
+            '1/2': { fracao: 1/2, label: '1/2', classe: 'bloco-meia'},
+            '1/3': { fracao: 1/3, label: '1/3', classe: 'bloco-um-terco'},
+            '1/4': { fracao: 1/4, label: '1/4', classe: 'bloco-um-quarto'},
+            '1/5': { fracao: 1/5, label: '1/5', classe: 'bloco-um-quinto'},
+            '1/6': { fracao: 1/6, label: '1/6', classe: 'bloco-um-sexto'},
+            '1/7': { fracao: 1/7, label: '1/7', classe: 'bloco-um-setimo'},
+            '1/8': { fracao: 1/8, label: '1/8', classe: 'bloco-um-oitavo'},
+            '1/9': { fracao: 1/9, label: '1/9', classe: 'bloco-um-nono'},
+            '1/10': { fracao: 1/10, label: '1/10', classe: 'bloco-um-dez-avos'},
+            
+        };
 
         this.idProximo = 0;
         this.inicializar();
@@ -36,86 +60,85 @@ class JogoFracoes {
 
     proximaFase() {
         if (this.faseAtual < this.fases.length) {
-            if (this.vigaAtual.length > 0 || this.fasesCompletadas > 0) {
-                this.faseAtual++; // Só incrementa se não for a primeira carga
-            } 
-        this.vigaAtual = [];
-        document.getElementById('btn-proxima').classList.remove('active');
-        this.atualizarUI();
-        }else {
+        // Incrementa o placar apenas aqui, quando o usuário confirma a saída da fase
+            this.fasesCompletadas++; 
+        
+            this.faseAtual++;
+            this.vigaAtual = [];
+            document.getElementById('btn-proxima').classList.remove('active');
+            this.renderizarBlocos();
+            this.atualizarUI();
+        } else {
             alert('🎉 Parabéns! Você completou todas as fases!');
             this.faseAtual = 1;
             this.fasesCompletadas = 0;
-            this.proximaFase();
+            this.vigaAtual = []; // Limpa a viga ao reiniciar o jogo
+            this.renderizarBlocos();
+            this.atualizarUI();
         }
     }
 
     renderizarBlocos() {
-    const container = document.getElementById('blocos-container');
-    container.innerHTML = '';
-
-    this.tiposBlocos.forEach((tipo, index) => {
-        const bloco = document.createElement('div');
-        bloco.textContent = tipo.label;
-        bloco.innerHTML = this.formatarFracaoHTML(tipo.label);
-        bloco.className = `bloco ${tipo.classe}`;
+        const container = document.getElementById('blocos-container');
+        container.innerHTML = '';
         
-        // Aplica a largura proporcional ao valor da fração
-        // Se a fração é 1/2, a largura será 50% do container pai
-        bloco.style.height = `${tipo.fracao * 100}%`;
-        bloco.style.width = '60px';
+        // Pega a fase atual baseada no índice
+        const fase = this.fases[this.faseAtual - 1];
         
-        bloco.setAttribute('draggable', 'true');
-        bloco.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('tipo', JSON.stringify({
-                fracao: tipo.fracao,
-                label: tipo.label,
-                classe: tipo.classe
-            }));
+        fase.estoque.forEach((chave, index) => {
+            const caracteristicas = this.tiposBlocos[chave];
+            if (!caracteristicas) return;
+            const bloco = document.createElement('div');
+            bloco.innerHTML = this.formatarFracaoHTML(caracteristicas.label);
+            // Verifica se este bloco específico (pelo índice) já foi para a viga
+            const jaUsado = this.vigaAtual.some(b => b.indexOriginal === index);
+            bloco.className = `bloco ${caracteristicas.classe} ${jaUsado ? 'usado' : ''}`;
+            bloco.style.height = `${caracteristicas.fracao * 100}%`;
+            bloco.style.width = '60px';
+                
+            if (!jaUsado) {
+            bloco.setAttribute('draggable', 'true');
+            bloco.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('indexEstoque', index);
+                e.dataTransfer.setData('chaveBloco', chave);
+            });
+            }
+            container.appendChild(bloco);
         });
-
-        container.appendChild(bloco);
-    });
     }
 
     configurarDragAndDrop() {
         const vigaContainer = document.getElementById('viga-container');
-
-        vigaContainer.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            vigaContainer.classList.add('over');
-        });
-
-        vigaContainer.addEventListener('dragleave', (e) => {
-            if (e.target === vigaContainer) {
-                vigaContainer.classList.remove('over');
-            }
-        });
-
+        vigaContainer.addEventListener('dragover', (e) => e.preventDefault());
         vigaContainer.addEventListener('drop', (e) => {
             e.preventDefault();
-            vigaContainer.classList.remove('over');
+            const index = parseInt(e.dataTransfer.getData('indexEstoque'));
+            const chave = e.dataTransfer.getData('chaveBloco');
+            const caracteristicas = this.tiposBlocos[chave];
 
-            const dados = JSON.parse(e.dataTransfer.getData('tipo'));
-            this.adicionarBlocoAViga(dados.fracao, dados.label, dados.classe);
+            this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
+            this.renderizarBlocos();
         });
     }
 
-    adicionarBlocoAViga(fracao, label, classe) {
+    adicionarBlocoAViga(fracao, label, classe, indexOriginal) {
         this.vigaAtual.push({
             id: this.idProximo++,
             fracao: fracao,
             label: label,
-            classe: classe
+            classe: classe,
+            indexOriginal: indexOriginal
         });
-
         this.atualizarUI();
         this.verificarVitoria();
     }
 
     removerBlocoViga(id) {
+        
         this.vigaAtual = this.vigaAtual.filter(b => b.id !== id);
         this.atualizarUI();
+        this.renderizarBlocos();
+        this.verificarVitoria();
     }
 
     atualizarUI() {
@@ -259,19 +282,29 @@ class JogoFracoes {
     }
 
     verificarVitoria() {
-        console.log("rodando funcao verificarVitoria()");
         const faseAtual = this.fases[this.faseAtual - 1];
         const totalViga = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
         const diferenca = Math.abs(totalViga - faseAtual.alvo);
 
         if (diferenca < 0.001) {
             this.vitoria();
+        } else {
+        // Se a viga não estiver no tamanho correto, esconde o botão
+            const btnProxima = document.getElementById('btn-proxima');
+            btnProxima.classList.remove('active');
+        
+        // Opcional: Remove a mensagem de sucesso se o usuário tirar o bloco
+            const status = document.getElementById('status-mensagem');
+            if (status.classList.contains('sucesso')) {
+            status.className = 'status-mensagem';
+            status.textContent = '';
+            }
         }
     }
 
     vitoria() {
         console.log("rodando funcao vitoria()");
-        this.fasesCompletadas++;
+        
         const btnProxima = document.getElementById('btn-proxima');
         btnProxima.classList.add('active');
 
@@ -281,10 +314,12 @@ class JogoFracoes {
     }
 
     limpar() {
+       
         this.vigaAtual = [];
         document.getElementById('btn-proxima').classList.remove('active');
         document.getElementById('status-mensagem').className = 'status-mensagem';
         document.getElementById('status-mensagem').textContent = '';
+        this.renderizarBlocos();
         this.atualizarUI();
     }
 
