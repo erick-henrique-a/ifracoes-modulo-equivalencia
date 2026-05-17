@@ -3,20 +3,21 @@ class JogoFracoes {
         this.faseAtual = 1;
         this.fasesCompletadas = 0;
         this.vigaAtual = [];
-        
+
+                
         // Definição das fases (cada fase tem um alvo em frações)
         this.fases = [
             // Agora cada fase tem seu próprio "estoque" de blocos (array de strings)
             //Teste: {numero: 1, alvo: 1, descricao: '1', estoque: ['1/2', '1/3', '1/4', '1/5', '1/6', '1/7', '1/8', '1/9', '1/10'] },
             // Nível 1
-            { numero: 1, alvo: 1, descricao: '1', estoque: ['1/2', '1/2', '1/2'] },
+            { numero: 1, alvo: 1, descricao: '1', estoque: ['1/2', '1/2', '1/2', '1/2'] },
             { numero: 2, alvo: 1, descricao: '1', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4', '1/4'] },
             { numero: 3, alvo: 3/4, descricao: '3/4', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
-            { numero: 4, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
+            { numero: 4, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/4', '1/4', '1/4'] },
             { numero: 5, alvo: 1, descricao: '1', estoque: ['1/2', '1/4', '1/4','1/4'] },
 
             //Nível 2: Introduzir 1/8
-            { numero: 6, alvo: 1, descricao: '1', estoque: ['1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8'] },
+            { numero: 6, alvo: 1, descricao: '1', estoque: ['1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8', '1/8','1/8', '1/8'] },
             { numero: 7, alvo: 1/4, descricao: '1/4', estoque: ['1/2', '1/8', '1/8','1/8'] },
             { numero: 8, alvo: 3/8, descricao: '3/8', estoque: ['1/2', '1/8', '1/8', '1/8','1/8'] },
             { numero: 9, alvo: 1/2, descricao: '1/2', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },          
@@ -24,7 +25,7 @@ class JogoFracoes {
             { numero: 11, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4', '1/8'] },
             { numero: 12, alvo: 3/8, descricao: '3/8', estoque: ['1/4', '1/8', '1/4', '1/2'] },
             { numero: 13, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8','1/8'] },
-            { numero: 14, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/4', '1/8'] },
+            { numero: 14, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/4', '1/8', '1/8'] },
             { numero: 15, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/4', '1/4', '1/4'] },
             { numero: 16, alvo: 3/4, descricao: '3/4', estoque: ['1/8', '1/8', '1/2', '1/2'] },
             
@@ -48,21 +49,30 @@ class JogoFracoes {
             
         };
 
+        this.fracoesDesbloqueadas = new Set();
+
         this.idProximo = 0;
+        this.criarEstruturaInicialDesbloqueios();
         this.inicializar();
     }
 
     inicializar() {    
         this.renderizarBlocos();
         this.configurarDragAndDrop();
+        this.renderizarDesbloqueios();
         this.atualizarUI();
     }
 
     proximaFase() {
         if (this.faseAtual < this.fases.length) {
-        // Incrementa o placar apenas aqui, quando o usuário confirma a saída da fase
-            this.fasesCompletadas++; 
-        
+            this.fasesCompletadas++;
+            
+            // CORREÇÃO: Registra APENAS as frações que estão atualmente construídas na viga
+            this.vigaAtual.forEach(bloco => {
+                this.fracoesDesbloqueadas.add(bloco.label);
+            }); 
+
+            this.renderizarDesbloqueios();
             this.faseAtual++;
             this.vigaAtual = [];
             document.getElementById('btn-proxima').classList.remove('active');
@@ -72,7 +82,8 @@ class JogoFracoes {
             alert('🎉 Parabéns! Você completou todas as fases!');
             this.faseAtual = 1;
             this.fasesCompletadas = 0;
-            this.vigaAtual = []; // Limpa a viga ao reiniciar o jogo
+            this.vigaAtual = [];
+            document.getElementById('btn-proxima').classList.remove('active');
             this.renderizarBlocos();
             this.atualizarUI();
         }
@@ -80,7 +91,7 @@ class JogoFracoes {
 
     renderizarBlocos() {
         const container = document.getElementById('blocos-container');
-        container.innerHTML = '';
+        container.innerHTML = '<div class="blocos-title">🧱 Blocos Disponíveis</div>';
         
         // Pega a fase atual baseada no índice
         const fase = this.fases[this.faseAtual - 1];
@@ -93,8 +104,8 @@ class JogoFracoes {
             // Verifica se este bloco específico (pelo índice) já foi para a viga
             const jaUsado = this.vigaAtual.some(b => b.indexOriginal === index);
             bloco.className = `bloco ${caracteristicas.classe} ${jaUsado ? 'usado' : ''}`;
-            bloco.style.height = `${caracteristicas.fracao * 100}%`;
-            bloco.style.width = '60px';
+            bloco.style.height = `${caracteristicas.fracao * 80}%`;
+            bloco.style.width = '110px';
                 
             if (!jaUsado) {
             bloco.setAttribute('draggable', 'true');
@@ -104,6 +115,78 @@ class JogoFracoes {
             });
             }
             container.appendChild(bloco);
+        });
+    }
+
+    // Criado uma única vez no arranque do jogo para fixar os elementos na tela
+    criarEstruturaInicialDesbloqueios() {
+        const grid = document.getElementById('desbloqueios-grid');
+        if (!grid) return;
+        grid.innerHTML = ''; // Limpa apenas na primeira inicialização
+
+        // 1. Bloco Inteiro Fixo Preto (Sempre visível)
+        const blocoInteiro = document.createElement('div');
+        blocoInteiro.className = 'conquista-item bloco-inteiro-fixo';
+        blocoInteiro.innerHTML = `
+            <div class="mini-inteiro-container">
+                <div class="mini-bloco-divisao cor-inteiro-preto">
+                    <div class="mini-texto-wrapper">
+                        <span class="texto-inteiro-fixo">1</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        grid.appendChild(blocoInteiro);
+
+        // 2. Lista estática das outras 9 frações mapeadas por ID
+        const todasPossiveis = ['1/2', '1/3', '1/4', '1/5', '1/6', '1/7', '1/8', '1/9', '1/10'];
+
+        todasPossiveis.forEach(chave => {
+            const containerItem = document.createElement('div');
+            // Guardamos a chave da fração no próprio elemento para o encontrar depois
+            containerItem.dataset.fracaoChave = chave;
+            containerItem.className = 'conquista-item bloqueado';
+            containerItem.innerHTML = '<span class="ponto-interrogacao">?</span>';
+            containerItem.title = 'Fração trancada';
+
+            grid.appendChild(containerItem);
+        });
+    }
+
+    // Altera apenas o estado das frações que acabam de ser conquistadas
+    renderizarDesbloqueios() {
+        // Buscamos apenas os itens que estão marcados como bloqueados atualmente
+        const itensBloqueados = document.querySelectorAll('.conquista-item.bloqueado');
+        
+        itensBloqueados.forEach(containerItem => {
+            const chave = containerItem.dataset.fracaoChave;
+            
+            // Se o jogador acabou de desbloquear esta fração
+            if (this.fracoesDesbloqueadas.has(chave)) {
+                // Remove o estado de bloqueado e aplica o descoberto
+                containerItem.className = 'conquista-item descoberto';
+                containerItem.removeAttribute('title');
+                
+                const denominador = parseInt(chave.split('/')[1]);
+                let blocosInternosHTML = `<div class="mini-inteiro-container">`;
+                
+                for (let i = 0; i < denominador; i++) {
+                    const classeCor = this.tiposBlocos[chave]?.classe || '';
+                    const textoFormatadoHTML = this.formatarFracaoHTML(chave);
+                    
+                    blocosInternosHTML += `
+                        <div class="mini-bloco-divisao ${classeCor}">
+                            <div class="mini-texto-wrapper">
+                                ${textoFormatadoHTML}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                blocosInternosHTML += `</div>`;
+                // Insere o conteúdo colorido apenas nesta caixa específica
+                containerItem.innerHTML = blocosInternosHTML;
+            }
         });
     }
 
@@ -145,21 +228,26 @@ class JogoFracoes {
         const faseAtual = this.fases[this.faseAtual - 1];
         if (!faseAtual) return;
 
-        // Atualizar fase
-        document.getElementById('fase-numero').textContent = faseAtual.numero;
-        document.getElementById('target-display').innerHTML = this.formatarFracaoHTML(faseAtual.descricao);
-        document.getElementById('target-value').innerHTML = this.formatarFracaoHTML(faseAtual.descricao);
-
-        // Atualizar placar
-        document.getElementById('placar-valor').textContent = this.fasesCompletadas;
-        
+         // Atualizar placar
+        const totalFases = this.fases.length;
+        // Exibe "Fase 3 de 16"
+        document.getElementById('placar-valor').textContent = `Fase ${this.faseAtual} de ${totalFases}`;
+        // Atualiza a barra de progresso das fases totais
+        const percentualFases = (this.faseAtual / totalFases) * 100;
+        const barraFaseFill = document.getElementById('fase-progresso-fill');
+        if (barraFaseFill) {
+            barraFaseFill.style.width = `${percentualFases}%`;
+        }
         // Calcular total da viga
         const totalViga = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
         // Atualizar a Linha Alvo Visual
         const linhaAlvo = document.getElementById('linha-alvo');
         if (linhaAlvo) {
             linhaAlvo.style.height = `${faseAtual.alvo * 100}%`;
-        
+            const balaoTexto = document.getElementById('balao-alvo-texto');
+            if (balaoTexto) {
+                balaoTexto.innerHTML = `Alvo: ${this.formatarFracaoHTML(faseAtual.descricao)}`;
+        }
         // Brilhar verde se atingir o alvo exato
             if (Math.abs(totalViga - faseAtual.alvo) < 0.001) {
                 linhaAlvo.classList.add('alvo-atingido');
@@ -180,16 +268,10 @@ class JogoFracoes {
 
         // Atualizar viga construída
         this.renderizarVigaConstruida(totalViga);
-
-        // Atualizar progresso
-        this.atualizarProgresso(totalViga, faseAtual.alvo);
-
-        // Atualizar escala visual
-        // this.atualizarEscalaVisual(totalViga, faseAtual.alvo);
-
+        
         // Atualizar status
         this.atualizarStatus(totalViga, faseAtual.alvo);
-        
+                
     }
 
     renderizarVigaConstruida(total) {
@@ -219,46 +301,9 @@ class JogoFracoes {
 
         // Adicionar exibição do total
         const totalDiv = document.createElement('div');
-        totalDiv.className = "total-viga-flutuante";
-        const textoDoTotal = this.formatarFracao(total); // Primeiro converte o número para string (ex: "3/4")
-        totalDiv.innerHTML = `<span> = </span> ${this.formatarFracaoHTML(textoDoTotal)}`; // Depois transforma em HTML empilhado
-        
+                
         vigaConstruida.appendChild(totalDiv);
-    }
-
-    atualizarProgresso(total, alvo) {
-        const progressPercent = Math.min((total / alvo) * 100, 100);
-        const preenchimento = document.getElementById('progresso-fill');
-        preenchimento.style.width = progressPercent + '%';
-
-        // Atualizar texto do progresso
-        const progresso = document.getElementById('progresso-texto');
-        progresso.textContent = `${this.formatarFracao(total)}/${this.formatarFracao(alvo)}`;
-
-        // Atualizar percentual
-        const percentual = document.getElementById('progresso-percentual');
-        if (progressPercent > 15) {
-            percentual.textContent = Math.round(progressPercent) + '%';
-        } else {
-            percentual.textContent = '';
-        }
-    }
-
-    atualizarEscalaVisual(total, alvo) {
-        const escalaVisual = document.getElementById('escala-visual');
-        const preenchida = escalaVisual.querySelector('.escala-preenchida');
-        const percent = Math.min((total / alvo) * 100, 100);
-        preenchida.style.width = percent + '%';
-
-        // Mudar cor se completou
-        if (Math.abs(total - alvo) < 0.001) {
-            preenchida.style.background = 'linear-gradient(90deg, #51cf66 0%, #40c057 100%)';
-        } else if (total > alvo) {
-            preenchida.style.background = 'linear-gradient(90deg, #ff6b6b 0%, #ff5252 100%)';
-        } else {
-            preenchida.style.background = 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)';
-        }
-    }
+    }    
 
     atualizarStatus(total, alvo) {
         const status = document.getElementById('status-mensagem');
@@ -267,8 +312,8 @@ class JogoFracoes {
         status.className = 'status-mensagem';
 
         if (diferenca < 0.001) {
-            status.textContent = '✅ Perfeito! Você montou a viga corretamente!';
-            status.classList.add('sucesso');
+            //status.textContent = '✅ Perfeito! Você montou a viga corretamente!';
+            //status.classList.add('sucesso');
         } else if (total > alvo) {
             status.textContent = '⚠️ Você colocou demais! Remova alguns blocos.';
             status.classList.add('quase');
@@ -307,10 +352,7 @@ class JogoFracoes {
         
         const btnProxima = document.getElementById('btn-proxima');
         btnProxima.classList.add('active');
-
-        const status = document.getElementById('status-mensagem');
-        status.textContent = '🎉 Fase Completa! Aperte o botão para continuar!';
-        status.className = 'status-mensagem sucesso';
+        
     }
 
     limpar() {

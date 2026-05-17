@@ -11,74 +11,60 @@
     <div class="container">
         <!-- PAINEL ESQUERDO -->
         <div class="left-panel">
-            <div class="blocos-title">🧱 Blocos Disponíveis</div>
-            <div class="blocos-container" id="blocos-container">
+            <div class="titulo-principal">Construtor de Colunas</div>
+            <div class="subtitulo">Você é um engenheiro! Construa a coluna com o tamanho correto.</div>         
+                                  
+            
+            <div class="blocos-container" id="blocos-container">               
+        
                 <!-- blocos serão inseridos aqui -->
             </div>
             <div class="info-blocos">
                 💡 Arraste os blocos para a direita para construir a viga!
-            </div>
+            </div> 
         </div>
 
         <!-- PAINEL CENTRAL -->
         <div class="center-panel">
-            <div class="titulo-principal">Construtor de Colunas</div>
-            <div class="subtitulo">Você é um engenheiro! Construa a coluna com o tamanho correto.</div>
             
-            <div class="engenheiro">👷‍♂️</div>
-
-            <div class="info-fase">
-                <div><strong>Fase:</strong> <span id="fase-numero">1</span></div>
-                <div><span class="target-label">🎯 Tamanho Alvo:</span> <span id="target-display"></span></div>
+            <div class="painel-desbloqueios">
+                <div class="desbloqueios-titulo">🔓 Painel de Desbloqueios</div>
+                <div class="desbloqueios-grid" id="desbloqueios-grid">
+                </div>
             </div>
-
             <div class="viga-container" id="viga-container">
-                <div id="linha-alvo" class="linha-alvo"></div> 
+                <div id="linha-alvo" class="linha-alvo">
+                    <div class="balao-alvo" id="balao-alvo-texto"></div>
+                </div> 
                 <div class="viga-construida" id="viga-construida">
                 </div>
             </div>
 
-            <div class="progresso-container">
-                <div class="progresso-label">
-                    <span>Progresso:</span>
-                    <span id="progresso-texto">0/0</span>
-                </div>
-                <div class="progresso-bar">
-                    <div class="progresso-fill" id="progresso-fill" style="width: 0%;">
-                        <span id="progresso-percentual"></span>
-                    </div>
-                </div>
-            </div>
-
             <div class="status-mensagem" id="status-mensagem"></div>
-        </div>
-
-        <!-- PAINEL DIREITO -->
-        <div class="right-panel">
-            <div class="tamanho-alvo">
-                <div class="tamanho-alvo-label">📐 Tamanho Alvo</div>
-                <div class="tamanho-alvo-value" id="target-value"></div>
-            </div>
-
-           <!-- <div class="barra-alvo">
-                <div class="escala-visual" id="escala-visual">
-                    <div class="escala-preenchida"></div>
-                </div>
-            </div> -->
-
-            <div class="marcadores" id="marcadores">
-                <!-- Marcadores serão inseridos aqui -->
-            </div>
-
-            <div class="placar">
-                <div class="placar-titulo">⭐ Fases Completadas</div>
-                <div class="placar-valor" id="placar-valor">0</div>
-            </div>
-
             <div class="botoes-container">
                 <button class="btn-limpar" onclick="game.limpar()">🗑️ Limpar</button>
                 <button class="btn-proxima" id="btn-proxima" onclick="game.proximaFase()">✓ Próxima Fase</button>
             </div>
+            
+        </div>
+
+        <!-- PAINEL DIREITO -->
+        <div class="right-panel">
+            
+            <div class="placar">                
+                <div class="placar-titulo">Progresso do Jogo</div>
+                <div class="placar-valor" id="placar-valor">Fase 1 de 16</div>
+                <div class="fase-progresso-bar">
+                    <div class="fase-progresso-fill" id="fase-progresso-fill" style="width: 0%;"></div>
+                </div>
+            
+            </div>  
+            <div class="engenheiro">👷‍♂️</div>
+            <div class="marcadores" id="marcadores">
+                <!-- Marcadores serão inseridos aqui -->
+            </div>          
+
+            
         </div>
     </div>
 
