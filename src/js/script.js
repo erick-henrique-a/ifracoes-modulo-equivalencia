@@ -567,7 +567,10 @@ class TutorialGerenciador {
             }
         } 
         else if (this.passoAtual === 3) {
-            if (this.btn) this.btn.style.display = 'none'; 
+            if (this.btn) {
+                this.btn.style.display = 'block';
+                this.btn.textContent = "Pular";
+            }
             
             const conteinerBlocos = document.getElementById('blocos-container');
             if (conteinerBlocos) conteinerBlocos.classList.add('tutorial-destaque');
@@ -591,7 +594,10 @@ class TutorialGerenciador {
             }
         } 
         else if (this.passoAtual === 4) {
-            if (this.btn) this.btn.style.display = 'none';
+            if (this.btn) {
+                this.btn.style.display = 'block';
+                this.btn.textContent = "Pular";
+            }
             if (this.mao) this.mao.style.display = 'none';
 
             const conteinerBlocos = document.getElementById('blocos-container');
@@ -701,45 +707,29 @@ class TutorialGerenciador {
         this.balao.style.display = 'flex';
         this.texto.innerHTML = mensagem;
 
-        const margin = 20;
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-
-        if (posicao === "center" || !elementoAlvo) {
-            this.balao.style.top = "50%";
-            this.balao.style.left = "50%";
-            this.balao.style.transform = "translate(-50%, -50%)";
-        } else {
-            this.balao.style.transform = "none";
-            const rect = elementoAlvo.getBoundingClientRect();
-            
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-            let top, left;
-
-            if (posicao === "left") {
-                top = rect.top + scrollTop + (rect.height / 2) - 80;
-                left = rect.left + scrollLeft - 360;
-            } else if (posicao === "right") {
-                top = rect.top + scrollTop - 80;
-                left = rect.right + scrollLeft + 20;
-            } else if (posicao === "top") {
-                top = rect.top + scrollTop - 240;
-                left = rect.left + scrollLeft + (rect.width / 2) - 300;
-            } else if (posicao === "down") {
-                top = rect.bottom + scrollTop + 20;
-                left = rect.left + scrollLeft + (rect.width / 2) - (600 / 2);
+        // A partir do passo 2, coloca no canto superior direito do container
+        if (this.passoAtual >= 2) {
+            const container = document.querySelector('.container');
+            if (container) {
+                const rect = container.getBoundingClientRect();
+                const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Posiciona no canto superior direito do container
+                const top = rect.top + scrollTop + 20;
+                const left = rect.right + scrollLeft - 620; // 600px (max-width) + 20px de margem
+                
+                this.balao.style.top = `${top}px`;
+                this.balao.style.left = `${left}px`;
+                this.balao.style.transform = "none";
             }
-
-            // Garantir que não ultrapasse as bordas da viewport
-            if (left < margin) left = margin;
-            if (left + 600 > viewportWidth) left = viewportWidth - 600 - margin;
-            if (top < margin) top = margin;
-            if (top + 200 > viewportHeight + scrollTop) top = viewportHeight + scrollTop - 220;
-
-            this.balao.style.top = `${top}px`;
-            this.balao.style.left = `${left}px`;
+        } else {
+            // Passo 1: centralizado na tela
+            if (posicao === "center" || !elementoAlvo) {
+                this.balao.style.top = "50%";
+                this.balao.style.left = "50%";
+                this.balao.style.transform = "translate(-50%, -50%)";
+            }
         }
     }
 
