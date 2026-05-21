@@ -57,6 +57,20 @@ class JogoFracoes {
         //this.inicializar();
     }
 
+    abrirModalConquistas() {
+        const modal = document.getElementById('modal-conquistas');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    }
+
+    fecharModalConquistas() {
+        const modal = document.getElementById('modal-conquistas');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
     inicializar() {    
         this.renderizarBlocos();
         this.configurarDragAndDrop();
@@ -515,7 +529,7 @@ class TutorialGerenciador {
             const viga = document.getElementById('viga-container');
             if (viga) {
                 viga.classList.add('tutorial-destaque');
-                this.mostrarBalao("O seu objetivo é preencher a fração alvo da coluna central.", "top", viga);
+                this.mostrarBalao("O seu objetivo é preencher a fração alvo da coluna central.", "center");
             } else {
                 this.proximoPasso();
             }
@@ -600,32 +614,49 @@ class TutorialGerenciador {
             );
         }
         else if (this.passoAtual === 6) {
-            // CORREÇÃO 1: Removido o erro de sintaxe 'style.style.display'
             if (this.algebraBox) this.algebraBox.style.display = 'none';
             if (this.btn) {
                 this.btn.style.display = 'block';
-                this.btn.textContent = "Pronto para o desafio! Começar Jogo 🚀";
+                this.btn.textContent = "Avançar";
             }
             
             this.jogo.fracoesDesbloqueadas.add('1/2');
             this.jogo.renderizarDesbloqueios();
 
-            const painelDesbloqueios = document.querySelector('.painel-desbloqueios');
-            if (painelDesbloqueios) {
-                painelDesbloqueios.classList.add('tutorial-destaque');
-                painelDesbloqueios.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const btnConquistas = document.getElementById('btn-conquistas');
+            if (btnConquistas) {
+                btnConquistas.classList.add('tutorial-destaque');
             }
             
+            this.mostrarBalao(
+                "Excelente! Você desbloqueou um item! 🔓 Veja o botão de <b>Conquistas</b> no painel direito. Clique nele para ver seus itens desbloqueados!",
+                "down"
+            );
+        }
+        else if (this.passoAtual === 7) {
+            if (this.btn) {
+                this.btn.style.display = 'block';
+                this.btn.textContent = "Pronto para o desafio! Começar Jogo 🚀";
+            }
+
+            // Abre o modal automaticamente para o tutorial
+            this.jogo.abrirModalConquistas();
+            const modal = document.getElementById('modal-conquistas');
+            if (modal) {
+                modal.classList.add('tutorial-destaque');
+            }
+
             const slotMetade = document.querySelector('[data-fracao-chave="1/2"]');
             if (slotMetade) {
                 slotMetade.classList.add('conquista-brilho-tutorial');
             }
 
             this.mostrarBalao(
-                "<b>Espere, tem mais!</b> Você desbloqueou um item no painel de conquistas! 🔓 Isso acontece ao formar 1 inteiro usando blocos iguais. Novos itens só abrem seguindo essa regra!<br>" +
-                "Nas próximas fases, quando você começar a misturar blocos diferentes, use esse painel como um guia visual.", 
+                "Aqui está seu <b>Painel de Conquistas!</b> 🏆 Cada vez que você formar 1 inteiro usando blocos iguais, um novo item será desbloqueado. " +
+                "Use este painel como um guia visual para entender quais frações você já domina!<br>" +
+                "Nas próximas fases, quando você começar a misturar blocos diferentes, você desbloqueará mais itens.",
                 "down"
-        );
+            );
         }
         else {
             this.encerrar();
@@ -638,6 +669,10 @@ class TutorialGerenciador {
         this.balao.style.display = 'flex';
         this.texto.innerHTML = mensagem;
 
+        const margin = 20;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
         if (posicao === "center" || !elementoAlvo) {
             this.balao.style.top = "50%";
             this.balao.style.left = "50%";
@@ -649,20 +684,30 @@ class TutorialGerenciador {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
+            let top, left;
+
             if (posicao === "left") {
-                this.balao.style.top = `${rect.top + scrollTop + (rect.height / 2) - 80}px`;
-                this.balao.style.left = `${rect.left + scrollLeft - 360}px`;
+                top = rect.top + scrollTop + (rect.height / 2) - 80;
+                left = rect.left + scrollLeft - 360;
             } else if (posicao === "right") {
-                this.balao.style.top = `${rect.top + scrollTop - 80}px`;
-                this.balao.style.left = `${rect.right + scrollLeft + 20}px`;
+                top = rect.top + scrollTop - 80;
+                left = rect.right + scrollLeft + 20;
             } else if (posicao === "top") {
-                this.balao.style.top = `${rect.top + scrollTop - 240}px`;
-                this.balao.style.left = `${rect.left + scrollLeft + (rect.width / 2) - 300}px`;
+                top = rect.top + scrollTop - 240;
+                left = rect.left + scrollLeft + (rect.width / 2) - 300;
+            } else if (posicao === "down") {
+                top = rect.bottom + scrollTop + 20;
+                left = rect.left + scrollLeft + (rect.width / 2) - (600 / 2);
             }
-            else if (posicao === "down") {
-                this.balao.style.top = "0%";
-                this.balao.style.left = `${rect.left + scrollLeft + (rect.width / 2) - 200}px`;
-            }
+
+            // Garantir que não ultrapasse as bordas da viewport
+            if (left < margin) left = margin;
+            if (left + 600 > viewportWidth) left = viewportWidth - 600 - margin;
+            if (top < margin) top = margin;
+            if (top + 200 > viewportHeight + scrollTop) top = viewportHeight + scrollTop - 220;
+
+            this.balao.style.top = `${top}px`;
+            this.balao.style.left = `${left}px`;
         }
     }
 
@@ -712,6 +757,9 @@ class TutorialGerenciador {
         if (slotMetade) {
             slotMetade.classList.remove('conquista-brilho-tutorial');
         }
+
+        // Fecha o modal de conquistas ao encerrar o tutorial
+        this.jogo.fecharModalConquistas();
 
         document.getElementById('viga-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
