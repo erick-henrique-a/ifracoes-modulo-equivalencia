@@ -39,8 +39,7 @@
             <div id="tutorial-algebra" class="tutorial-algebra"></div>
             <div class="status-mensagem" id="status-mensagem"></div>
             <div class="botoes-container">
-                <button class="btn-limpar" onclick="game.limpar()">🗑️ Limpar</button>
-                <button class="btn-proxima" id="btn-proxima" onclick="game.proximaFase()">✓ Próxima Fase</button>
+                <button class="btn-validar" id="btn-validar" onclick="game.abrirModalValidacao()">✓ Validar</button>
             </div>
             
         </div>
@@ -75,6 +74,25 @@
             <button class="modal-fechar" onclick="game.fecharModalConquistas()">&times;</button>
             <div class="desbloqueios-titulo">🔓 Painel de Conquistas</div>
             <div class="desbloqueios-grid" id="desbloqueios-grid">
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE VALIDAÇÃO -->
+    <div id="modal-validacao" class="modal-validacao">
+        <div class="modal-validacao-content">
+            <button class="modal-fechar" onclick="game.fecharModalValidacao()">&times;</button>
+            <div class="validacao-titulo">Verificando sua resposta...</div>
+            
+            <div class="validacao-soma">
+                <div class="validacao-expressao" id="validacao-expressao"></div>
+            </div>
+            
+            <div class="validacao-resultado" id="validacao-resultado"></div>
+            
+            <div class="validacao-botoes">
+                <button class="btn-proxima" id="btn-proxima-validacao" onclick="game.proximaFase(); game.fecharModalValidacao();">✓ Próxima Fase</button>
+                <button class="btn-limpar-validacao" id="btn-limpar-validacao" onclick="game.limpar(); game.fecharModalValidacao();">🗑️ Limpar</button>
             </div>
         </div>
     </div>

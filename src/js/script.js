@@ -14,20 +14,21 @@ class JogoFracoes {
             { numero: 2, alvo: 1, descricao: '1', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4', '1/4'] },
             { numero: 3, alvo: 3/4, descricao: '3/4', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
             { numero: 4, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/4', '1/4', '1/4'] },
-            { numero: 5, alvo: 1, descricao: '1', estoque: ['1/2', '1/4', '1/4','1/4'] },
+            { numero: 5, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4'] },
+            { numero: 6, alvo: 1, descricao: '1', estoque: ['1/2', '1/4', '1/4','1/4'] },
 
             //Nível 2: Introduzir 1/8
-            { numero: 6, alvo: 1, descricao: '1', estoque: ['1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8', '1/8','1/8', '1/8'] },
-            { numero: 7, alvo: 1/4, descricao: '1/4', estoque: ['1/2', '1/8', '1/8','1/8'] },
-            { numero: 8, alvo: 3/8, descricao: '3/8', estoque: ['1/2', '1/8', '1/8', '1/8','1/8'] },
-            { numero: 9, alvo: 1/2, descricao: '1/2', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },          
-            { numero: 10, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/8', '1/8', '1/8'] },            
-            { numero: 11, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4', '1/8'] },
-            { numero: 12, alvo: 3/8, descricao: '3/8', estoque: ['1/4', '1/8', '1/4', '1/2'] },
-            { numero: 13, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8','1/8'] },
-            { numero: 14, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/4', '1/8', '1/8'] },
-            { numero: 15, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/4', '1/4', '1/4'] },
-            { numero: 16, alvo: 3/4, descricao: '3/4', estoque: ['1/8', '1/8', '1/2', '1/2'] },
+            { numero: 7, alvo: 1, descricao: '1', estoque: ['1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8', '1/8','1/8', '1/8'] },
+            { numero: 8, alvo: 1/4, descricao: '1/4', estoque: ['1/2', '1/8', '1/8','1/8'] },
+            { numero: 9, alvo: 3/8, descricao: '3/8', estoque: ['1/2', '1/8', '1/8', '1/8','1/8'] },
+            { numero: 10, alvo: 1/2, descricao: '1/2', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },          
+            { numero: 11, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/8', '1/8', '1/8'] },            
+            { numero: 12, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4', '1/8'] },
+            { numero: 13, alvo: 3/8, descricao: '3/8', estoque: ['1/4', '1/8', '1/4', '1/2'] },
+            { numero: 14, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8','1/8'] },
+            { numero: 15, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/4', '1/8', '1/8'] },
+            { numero: 16, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/4', '1/4', '1/4'] },
+            { numero: 17, alvo: 3/4, descricao: '3/4', estoque: ['1/8', '1/8', '1/2', '1/2'] },
             
             // ... adicione as outras fases seguindo este padrão
             //Nível 3: Introduzir 1/3, 1/6, 1/9
@@ -71,6 +72,67 @@ class JogoFracoes {
         }
     }
 
+    abrirModalValidacao() {
+        const vigaAtual = this.vigaAtual;
+        
+        if (vigaAtual.length === 0) {
+            alert('⚠️ Coloque alguns blocos na viga antes de validar!');
+            return;
+        }
+
+        const modal = document.getElementById('modal-validacao');
+        const faseAtual = this.fases[this.faseAtual - 1];
+        const totalViga = vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
+        const isCorretto = Math.abs(totalViga - faseAtual.alvo) < 0.001;
+
+        // Exibe a expressão algébrica
+        const itensSomadosHTML = vigaAtual
+            .map(b => this.formatarFracaoHTML(b.label))
+            .join(' <span class="operador">+</span> ');
+        
+        const resultadoFormatado = this.formatarFracao(totalViga);
+        const resultadoHTML = this.formatarFracaoHTML(resultadoFormatado);
+
+        document.getElementById('validacao-expressao').innerHTML = 
+            `${itensSomadosHTML} <span class="operador">=</span> ${resultadoHTML}`;
+
+        // Exibe o resultado (check ou X)
+        const resultadoDiv = document.getElementById('validacao-resultado');
+        if (isCorretto) {
+            resultadoDiv.innerHTML = `
+                <div class="validacao-check">✅</div>
+                <div class="validacao-mensagem">Resposta Correta!</div>
+            `;
+            
+            // Mostra o botão "Próxima Fase" e esconde o "Limpar"
+            document.getElementById('btn-proxima-validacao').style.display = 'block';
+            document.getElementById('btn-limpar-validacao').classList.remove('show');
+            document.getElementById('btn-limpar-validacao').style.display = 'none';
+        } else {
+            resultadoDiv.innerHTML = `
+                <div class="validacao-check" style="font-size: 60px;">❌</div>
+                <div class="validacao-mensagem validacao-error">Resposta Incorreta!</div>
+                <div style="font-size: 14px; color: #666; margin-top: 10px;">Alvo: ${this.formatarFracaoHTML(faseAtual.descricao)}</div>
+            `;
+
+            // Mostra o botão "Limpar" e esconde o "Próxima Fase"
+            document.getElementById('btn-proxima-validacao').style.display = 'none';
+            document.getElementById('btn-limpar-validacao').classList.add('show');
+            document.getElementById('btn-limpar-validacao').style.display = 'block';
+        }
+
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    }
+
+    fecharModalValidacao() {
+        const modal = document.getElementById('modal-validacao');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
     inicializar() {    
         this.renderizarBlocos();
         this.configurarDragAndDrop();
@@ -96,7 +158,6 @@ class JogoFracoes {
             this.renderizarDesbloqueios();
             this.faseAtual++;
             this.vigaAtual = [];
-            document.getElementById('btn-proxima').classList.remove('active');
             this.renderizarBlocos();
             this.atualizarUI();
         } else {
@@ -104,7 +165,6 @@ class JogoFracoes {
             this.faseAtual = 1;
             this.fasesCompletadas = 0;
             this.vigaAtual = [];
-            document.getElementById('btn-proxima').classList.remove('active');
             this.renderizarBlocos();
             this.atualizarUI();
         }
@@ -451,32 +511,16 @@ class JogoFracoes {
 
         if (diferenca < 0.001) {
             this.vitoria();
-        } else {
-        // Se a viga não estiver no tamanho correto, esconde o botão
-            const btnProxima = document.getElementById('btn-proxima');
-            btnProxima.classList.remove('active');
-        
-        // Opcional: Remove a mensagem de sucesso se o usuário tirar o bloco
-            const status = document.getElementById('status-mensagem');
-            if (status.classList.contains('sucesso')) {
-            status.className = 'status-mensagem';
-            status.textContent = '';
-            }
         }
     }
 
     vitoria() {
-        console.log("rodando funcao vitoria()");
-        
-        const btnProxima = document.getElementById('btn-proxima');
-        btnProxima.classList.add('active');
-        
+        // Não precisa mais fazer nada aqui
+        // O botão "Próxima Fase" só aparecerá dentro do modal de validação
     }
 
     limpar() {
-       
         this.vigaAtual = [];
-        document.getElementById('btn-proxima').classList.remove('active');
         document.getElementById('status-mensagem').className = 'status-mensagem';
         document.getElementById('status-mensagem').textContent = '';
         this.renderizarBlocos();
@@ -690,7 +734,7 @@ class TutorialGerenciador {
             }
 
             this.mostrarBalao(
-                "Aqui está seu <b>Painel de Conquistas!</b> 🏆 Cada vez que você formar 1 inteiro usando blocos iguais, um novo item será desbloqueado. " +
+                "Aqui está seu <b>Painel de Conquistas!</b> 🏆 Cada vez que você formar 1 inteiro usando <strong>blocos iguais</strong>, um novo item será desbloqueado. " +
                 "Use este painel como um guia visual para entender quais frações você já domina!<br>" +
                 "Nas próximas fases, quando você começar a misturar blocos diferentes, você desbloqueará mais itens.",
                 "down"
