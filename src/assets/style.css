@@ -980,3 +980,40 @@ body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaq
 html, body, .container {
     scroll-behavior: smooth; /* Permite o deslize suave da câmara */
 }
+.soma-algebrica-container {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.expressao-algebrica {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.operador {
+    color: #764ba2;
+    font-size: 20px;
+    padding: 0 4px;
+}
+
+.resultado-soma {
+    color: #2bc48a;
+    font-size: 22px;
+}
+
+.soma-vazia {
+    color: #999;
+    font-style: italic;
+}

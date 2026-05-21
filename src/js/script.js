@@ -313,7 +313,7 @@ class JogoFracoes {
         const faseAtual = this.fases[this.faseAtual - 1];
         if (!faseAtual) return;
 
-         // Atualizar placar
+        // Atualizar placar
         const totalFases = this.fases.length;
         // Exibe "Fase 3 de 16"
         document.getElementById('placar-valor').textContent = `Fase ${this.faseAtual} de ${totalFases}`;
@@ -323,8 +323,40 @@ class JogoFracoes {
         if (barraFaseFill) {
             barraFaseFill.style.width = `${percentualFases}%`;
         }
+        
         // Calcular total da viga
         const totalViga = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
+        
+        const painelSoma = document.getElementById('viga-soma-algebrica');
+        if (painelSoma) {
+            if (this.vigaAtual.length === 0) {
+                painelSoma.innerHTML = '<span class="soma-vazia">0</span>';
+            } else {
+                // Cria o texto de frações somadas: "1/4 + 1/4" formatado em HTML
+                const itensSomadosHTML = this.vigaAtual
+                    .map(b => this.formatarFracaoHTML(b.label))
+                    .join(' <span class="operador">+</span> ');
+
+                // Calcula o valor total bonito (ex: se for 0.5, mostra 1/2)
+                const resultadoFormatado = this.formatarFracao(totalViga);
+                const resultadoHTML = this.formatarFracaoHTML(resultadoFormatado);
+
+                // Monta a estrutura final na tela
+                // com soma
+                // painelSoma.innerHTML = `
+                //     <div class="expressao-algebrica">
+                //         ${itensSomadosHTML} <span class="operador">=</span> <strong class="resultado-soma">${resultadoHTML}</strong>
+                //     </div>
+                // `;
+                // sem soma
+                painelSoma.innerHTML = `
+                    <div class="expressao-algebrica">
+                        ${itensSomadosHTML}
+                    </div>
+                `;
+            }
+        }
+
         // Atualizar a Linha Alvo Visual
         const linhaAlvo = document.getElementById('linha-alvo');
         if (linhaAlvo) {
