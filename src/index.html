@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Construtor de Vigas - Jogo de Frações</title>
+    <title>Construtor de Colunas - Jogo de Frações</title>
     <link rel="stylesheet" href="/src/assets/style.css">
 </head>
 <body>
@@ -11,78 +11,72 @@
     <div class="container">
         <!-- PAINEL ESQUERDO -->
         <div class="left-panel">
-            <div class="blocos-title">🧱 Blocos Disponíveis</div>
-            <div class="blocos-container" id="blocos-container">
+            <div class="titulo-principal">Frações em Colunas</div>
+            <div class="subtitulo">Você é um matemático! Construa a coluna com o tamanho correto.</div>         
+                                  
+            
+            <div class="blocos-container" id="blocos-container">               
+        
                 <!-- blocos serão inseridos aqui -->
             </div>
             <div class="info-blocos">
-                💡 Arraste os blocos para a direita para construir a viga!
-            </div>
+                💡 Arraste os blocos para a direita para construir a coluna!
+            </div> 
         </div>
 
         <!-- PAINEL CENTRAL -->
         <div class="center-panel">
-            <div class="titulo-principal">Construtor de Vigas</div>
-            <div class="subtitulo">Você é um engenheiro! Construa a viga com o tamanho correto.</div>
             
-            <div class="info-fase">
-                <div><strong>Fase:</strong> <span id="fase-numero">1</span></div>
-                <div><span class="target-label">🎯 Tamanho Alvo:</span> <span id="target-display"></span></div>
+            <div class="painel-desbloqueios">
+                <div class="desbloqueios-titulo">🔓 Painel de Conquistas</div>
+                <div class="desbloqueios-grid" id="desbloqueios-grid">
+                </div>
             </div>
-
-            <div class="engenheiro">👷‍♂️</div>
-
             <div class="viga-container" id="viga-container">
+                <div id="linha-alvo" class="linha-alvo">
+                    <div class="balao-alvo" id="balao-alvo-texto"></div>
+                </div> 
                 <div class="viga-construida" id="viga-construida">
-                    <div class="placeholder-text">Arraste os blocos aqui para construir!</div>
                 </div>
             </div>
-
-            <div class="progresso-container">
-                <div class="progresso-label">
-                    <span>Progresso:</span>
-                    <span id="progresso-texto">0/0</span>
-                </div>
-                <div class="progresso-bar">
-                    <div class="progresso-fill" id="progresso-fill" style="width: 0%;">
-                        <span id="progresso-percentual"></span>
-                    </div>
-                </div>
-            </div>
-
+            <div id="tutorial-algebra" class="tutorial-algebra"></div>
             <div class="status-mensagem" id="status-mensagem"></div>
-        </div>
-
-        <!-- PAINEL DIREITO -->
-        <div class="right-panel">
-            <div class="tamanho-alvo">
-                <div class="tamanho-alvo-label">📐 Tamanho Alvo</div>
-                <div class="tamanho-alvo-value" id="target-value"></div>
-            </div>
-
-            <div class="barra-alvo">
-                <div class="escala-visual" id="escala-visual">
-                    <div class="escala-preenchida"></div>
-                </div>
-            </div>
-
-            <div class="marcadores" id="marcadores">
-                <!-- Marcadores serão inseridos aqui -->
-            </div>
-
-            <div class="placar">
-                <div class="placar-titulo">⭐ Fases Completadas</div>
-                <div class="placar-valor" id="placar-valor">0</div>
-            </div>
-
             <div class="botoes-container">
                 <button class="btn-limpar" onclick="game.limpar()">🗑️ Limpar</button>
                 <button class="btn-proxima" id="btn-proxima" onclick="game.proximaFase()">✓ Próxima Fase</button>
             </div>
+            
+        </div>
+
+        <!-- PAINEL DIREITO -->
+        <div class="right-panel">
+            
+            <div class="placar">                
+                <div class="placar-titulo">Progresso do Jogo</div>
+                <div class="placar-valor" id="placar-valor">Fase 1 de 16</div>
+                <div class="fase-progresso-bar">
+                    <div class="fase-progresso-fill" id="fase-progresso-fill" style="width: 0%;"></div>
+                </div>
+            
+            </div>  
+            <div class="engenheiro">👷‍♂️</div>
+            <div class="marcadores" id="marcadores">
+                <!-- Marcadores serão inseridos aqui -->
+            </div>          
+
+            
         </div>
     </div>
 
 
     <script src="/src/js/script.js"></script>
+    <script src="/src/js/script.js"></script>
+
+    <div id="tutorial-overlay" class="tutorial-overlay"></div>
+    <div id="tutorial-balao" class="tutorial-balao">
+        <p id="tutorial-texto"></p>
+        <button id="tutorial-btn" onclick="game.tutorial.proximoPasso()">Avançar</button>
+    </div>
+    <div id="tutorial-mao" class="tutorial-mao">🫳</div>
 </body>
 </html>

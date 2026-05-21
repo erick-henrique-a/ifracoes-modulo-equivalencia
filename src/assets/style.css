@@ -18,7 +18,7 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 0.9fr 2.4fr 0.7fr;
     gap: 30px;
     background: white;
     border-radius: 15px;
@@ -36,38 +36,88 @@ body {
 }
 
 .blocos-title {
-    font-size: 24px;
+    font-size: 13px;
+    color: #4a5568;
     font-weight: bold;
-    color: #333;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
     text-align: center;
 }
 
 .blocos-container {
+    height: 400px; /* Mesma altura da viga-container */
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row !important; /* Coloca um ao lado do outro */
+    flex-wrap: wrap;      /*Permite quebrar linha se tiver muitos blocos */
+    gap: 10px;
     background: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
-    border: 2px solid #e0e0e0;
+    align-items: flex-end; /* ALINHA TODOS PELA BASE */
+    justify-content: center;
+    height: 520px;
+    font-family: 'Arial', sans-serif;
+    align-content: flex-start !important; 
+    align-items: flex-end !important;
 }
 
 .bloco {
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
+    width: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: horizontal-tb; /* Texto em pé se o bloco for muito fino */
+    text-orientation: horizontal;
+    border-radius: 4px;
     cursor: grab;
-    text-align: center;
-    transition: all 0.3s ease;
-    user-select: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    touch-action: none;
+}
+
+.linha-alvo {
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    bottom: 0; /* Começa da base */
+    height: 0; /* Controlado pelo JS */
+    border-top: 3px dashed #764ba2;
+    background: rgba(118, 75, 162, 0.1);
+    z-index: 1;
+    pointer-events: none;
+    transition: height 0.3s ease;
+}
+
+.balao-alvo {
+    position: absolute;
+    right: -120px; /* Joga o balão para fora e à direita da viga central */
+    top: -35px;    /* Centraliza verticalmente em relação à linha tracejada */
+    background-color: #764ba2;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(118, 75, 162, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.balao-alvo::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 9px solid #764ba2;
+    transition: border-right-color 0.3s ease;
 }
 
 .bloco:hover {
-    transform: scale(1.05);
+    filter: brightness(1.2);
+    transform: scale(1.01);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -75,21 +125,40 @@ body {
     cursor: grabbing;
 }
 
+/* FAMÍLIA DOS AZUIS (Múltiplos de 2: 2, 4, 8) */
+.bloco-meia {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
 .bloco-um-quarto {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
-
-.bloco-meia {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
 .bloco-um-oitavo {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
-.bloco-um-doze-avos {
+/* FAMÍLIA DOS QUENTES (Múltiplos de 3: 3, 6, 9) */
+.bloco-um-terco {
+    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+}
+.bloco-um-sexto {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+}
+.bloco-um-nono {
+    background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+}
+
+/* FAMÍLIA DOS VERDES (Múltiplos de 5: 5, 10) */
+.bloco-um-quinto {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+.bloco-um-dez-avos {
     background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 }
+/* Bloco um sétimo*/
+.bloco-um-setimo {
+    background: linear-gradient(135deg, #00b09b 0%, #df4dae 100%);
+}
+
 
 .info-blocos {
     font-size: 12px;
@@ -123,24 +192,6 @@ body {
     margin-bottom: 20px;
 }
 
-.info-fase {
-    background: #f0f3ff;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
-}
-
-.info-fase div {
-    font-size: 14px;
-    color: #333;
-    margin: 5px 0;
-}
-
-.target-label {
-    font-weight: bold;
-    color: #667eea;
-}
-
 .engenheiro {
     text-align: center;
     font-size: 60px;
@@ -154,16 +205,15 @@ body {
 }
 
 .viga-container {
-    background: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
-    border: 2px dashed #ccc;
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 120px;
+    height: 400px; 
+    margin: 0 auto;
+    background: #eee;
+    border: 3px solid #333;
     position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column-reverse; /* FAZ EMPILHAR DE BAIXO PARA CIMA */
+    overflow: visible !important;
 }
 
 .viga-container.over {
@@ -172,28 +222,23 @@ body {
 }
 
 .viga-construida {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
     width: 100%;
-    min-height: 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse; /* Garante que os blocos novos fiquem embaixo */
 }
 
 .bloco-colocado {
-    padding: 10px 8px;
-    border-radius: 4px;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(255,255,255,0.4);
+    width: 100% !important; /* Garante que ocupe a largura da viga */
 }
 
 .bloco-colocado:hover {
-    transform: scale(1.1);
+    filter: brightness(1.2);
+    transform: scale(1.01);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -204,93 +249,13 @@ body {
     width: 100%;
 }
 
-.progresso-container {
-    margin-top: 20px;
-}
-
-.progresso-label {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.progresso-bar {
-    width: 100%;
-    height: 24px;
-    background: #e0e0e0;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.progresso-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    transition: width 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-}
 
 /* PAINEL DIREITO */
 .right-panel {
     display: flex;
     flex-direction: column;
     gap: 30px;
-}
-
-.tamanho-alvo {
-    text-align: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
-
-.tamanho-alvo-label {
-    font-size: 12px;
-    opacity: 0.9;
-    margin-bottom: 10px;
-}
-
-.tamanho-alvo-value {
-    font-size: 48px;
-    font-weight: bold;
-}
-
-.barra-alvo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-    background: white;
-    padding: 25px 15px;
-    border-radius: 8px;
-    margin-top: 20px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.escala-visual {
-    flex: 1;
-    height: 40px;
-    background: linear-gradient(90deg, #f0f0f0 0%, #f0f0f0 100%);
-    border-radius: 5px;
-    position: relative;
-    border: 2px solid #ddd;
-    overflow: hidden;
-}
-
-.escala-preenchida {
-    height: 100%;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    border-radius: 3px;
-    transition: width 0.3s ease;
+    width: 100%;
 }
 
 .marcadores {
@@ -360,21 +325,42 @@ button {
 .placar {
     background: #f0f3ff;
     padding: 20px;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-radius: 12px;
+    border: 2px solid #667eea;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.1);
 }
 
 .placar-titulo {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 8px;
+    font-size: 13px;
+    color: #4a5568;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .placar-valor {
-    font-size: 32px;
-    font-weight: bold;
-    color: #667eea;
+    font-size: 24px;
+    font-weight: 800;
+    color: #764ba2;
+    margin-bottom: 12px;
+}
+.fase-progresso-bar {
+    width: 100%;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.fase-progresso-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4299e1 0%, #667eea 50%, #764ba2 100%);
+    width: 0%; /* Controlado dinamicamente pelo JS */
+    border-radius: 10px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .status-mensagem {
@@ -451,4 +437,435 @@ button {
         font-size: 10px;
         padding: 8px 6px;
     }
+}
+/* --- PAINEL DE DESBLOQUEIOS GEOMÉTRICO --- */
+.painel-desbloqueios {
+    background: #fcffed;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    width: 100%;
+}
+
+.desbloqueios-titulo {
+    font-size: 13px;
+    color: #4a5568;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-align: center;
+}
+
+/* Força o layout em 5 colunas exatas. 10 itens criarão 2 linhas perfeitas */
+.desbloqueios-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); 
+    gap: 8px;
+    justify-items: center;
+    width: 100%;
+}
+
+/* Itens da coleção redimensionados para caberem perfeitamente na proporção 5x2 */
+.conquista-item {
+    width: 100%;
+    height: 200px; /* Altura ligeiramente reduzida para caber as duas linhas harmonicamente */
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilo específico para o primeiro bloco (Inteiro Preto) */
+.conquista-item.bloco-inteiro-fixo {
+    background: #ffffff;
+    border: 2px solid #000000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.cor-inteiro-preto {
+    background: #1a1a1a !important; /* Cor preta sólida para o bloco */
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.texto-inteiro-fixo {
+    font-size: 35px;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+/* Estilo do bloco trancado (?) */
+.conquista-item.bloqueado {
+    background: #edf2f7;
+    border: 2px dashed #cbd5e0;
+}
+
+.conquista-item.bloqueado .ponto-interrogacao {
+    font-size: 20px;
+    font-weight: bold;
+    color: #a0aec0;
+}
+
+/* Estilo do bloco descoberto */
+.conquista-item.descoberto {
+    background: #ffffff;
+    border: 2px solid #2d3748;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Estrutura vertical interna */
+.mini-inteiro-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.mini-bloco-divisao {
+    flex: 1 1 0%; /* Força todas as fatias a terem rigorosamente o mesmo tamanho proporcional */
+    min-height: 0;  /* Permite que o flex encolha o elemento abaixo do seu conteúdo padrão */
+    display: flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+}
+
+.mini-texto-wrapper {
+    transform: scale(0.75); /* Diminuído para 0.75 para caber bem nos blocos menores */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Ajuste das Frações Internas */
+.mini-bloco-divisao .fracao-estilizada {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    line-height: 0.85 !important;
+    font-size: 25px !important; /* Tamanho adaptado para o novo grid */
+    font-weight: bold !important;
+    color: #000000 !important;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.mini-bloco-divisao .fracao-estilizada .numerador {
+    border-bottom: 1px solid #000000 !important;
+    padding-bottom: 1px !important;
+}
+
+/* Ajuste extra para frações densas (como 1/6 a 1/10) não quebrarem a linha */
+.mini-inteiro-container:has(.mini-bloco-divisao:nth-child(5)) .fracao-estilizada {
+    font-size: 16px !important;
+    line-height: 0.8 !important;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Estilo para a fração empilhada */
+.fracao-estilizada {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1.1;
+    font-size: 1.4rem; /* Aumenta o tamanho  */
+    font-weight: 800;  /* Deixa em negrito bem forte */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Sombra leve para destacar no gradiente */
+}
+
+.bloco-um-dez-avos .fracao-estilizada,
+.bloco-um-nono .fracao-estilizada {
+    font-size: 1.1rem;
+}
+
+.numerador {
+    border-bottom: 2px solid currentColor; /* Linha da fração */
+    padding: 0 2px;
+}
+
+.denominador {
+    padding: 0 2px;
+}
+
+/* Estilo para o resultado da soma acima da viga */
+.total-viga-flutuante {
+    position: absolute;
+    top: -80px; /* Empurra para cima, fora da borda da viga */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza perfeitamente */
+    width: 100px;
+    text-align: center;
+    background-color: white;
+    padding: 5px;
+    border-radius: 8px;
+    border: 2px solid #764ba2;
+    color: #333;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+/* Efeito de brilho quando atinge o alvo exato */
+.linha-alvo.alvo-atingido {
+    border-top: 4px solid #51cf66; /* Verde brilhante */
+    background: rgba(81, 207, 102, 0.3);
+    box-shadow: 0 0 15px #51cf66;
+    animation: pulse-green 1.5s infinite;
+}
+
+.linha-alvo.alvo-atingido .balao-alvo {
+    background-color: #40c057;
+    box-shadow: 0 2px 10px rgba(64, 192, 87, 0.4);
+}
+.linha-alvo.alvo-atingido .balao-alvo::before {
+    border-right-color: #40c057;
+}
+
+/* Pequeno ajuste para as frações ficarem bem legíveis dentro do balão */
+.balao-alvo .fracao-estilizada {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    line-height: 1;
+    font-size: 22px;
+    margin-left: 2px;
+}
+
+.balao-alvo .fracao-estilizada .numerador {
+    border-bottom: 1px solid white;
+    padding-bottom: 1px;
+}
+@keyframes pulse-green {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Efeito de viga sobrecarregada (passou de 1) */
+.viga-container.sobrecarga {
+    border: 4px solid #ff0000 !important;
+    background-color: #ffeaea;
+    box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.2);
+    animation: shake 0.2s ease-in-out 0s 2;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Adicione ou ajuste estas regras */
+.blocos-container {
+    display: flex;
+    flex-direction: row; 
+    flex-wrap: wrap;      
+    gap: 15px; /* Aumentado para parecerem peças soltas */
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    align-items: flex-end; 
+    justify-content: center;
+    min-height: 520px;
+    height: 520px;
+    font-family: 'Arial', sans-serif;
+    border: 2px dashed #ccc; /* Visual de "caixa de peças" */
+}
+
+.bloco {
+    transition: transform 0.2s;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2); /* Efeito 3D de peça */
+}
+
+.bloco:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+/* Classe para o bloco que já foi usado e está na viga */
+
+.bloco.usado {
+    background-color: #e0e0e0 !important; /* Cor cinza sólida */
+    background-image: none !important;    /* REMOVE o gradiente colorido */
+    border: 2px dashed #bbb !important;
+    opacity: 0.5 !important;
+    cursor: default !important;
+    pointer-events: none;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.bloco.usado .fracao-estilizada {
+    display: none !important; /* Garante que o texto suma */
+}
+
+/* --- SISTEMA DE TUTORIAL --- */
+.tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9998;
+    display: none;
+    pointer-events: auto; /* Bloqueia cliques no fundo */
+}
+
+.tutorial-destaque {
+    position: relative !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important; /* Libera a viga para aceitar o mouse e o drag */
+    background-color: #ffffff !important; /* Faz a coluna "acender" visualmente */
+    box-shadow: 0 0 30px rgba(255, 255, 255, 1) !important;
+}
+
+/* Garante que o resto dos elementos fiquem travados enquanto o tutorial estiver ativo */
+body:has(.tutorial-overlay[style*="display: block"]) button:not(#tutorial-btn),
+body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaque) {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+}
+
+.tutorial-balao {
+    position: fixed;
+    z-index: 9999;
+    background: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    font-family: 'Arial', sans-serif;
+    border: 3px solid #764ba2;
+    width: 800px;        /* Aumentou a largura padrão fixa */
+    max-width: 160%;      /* Garante que não vai quebrar em telas menores */
+    font-size: 14px;
+    
+}
+
+.tutorial-balao p {
+    font-size: 25px;
+    line-height: 1.4;
+    font-weight: bold;
+}
+
+#tutorial-btn {
+    background: #764ba2;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    align-self: flex-end;
+    text-transform: none;
+    font-size: 13px;
+}
+
+.tutorial-mao {
+    position: fixed;
+    z-index: 9999;
+    font-size: 50px;
+    display: none;
+    pointer-events: none;
+    transform-origin: top left;
+}
+
+/* Animações */
+@keyframes piscar-bloco {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.05); filter: brightness(1.4); box-shadow: 0 0 20px #3498db; }
+}
+
+.bloco-piscar {
+    animation: piscar-bloco 1.2s infinite ease-in-out;
+}
+
+@keyframes arrastar-mao {
+    0% {
+        top: var(--start-y);
+        left: var(--start-left);
+        content: "🫳";
+    }
+    30% {
+        content: "✊";
+    }
+    70% {
+        top: var(--end-y);
+        left: var(--end-left);
+        content: "✊";
+    }
+    100% {
+        top: var(--end-y);
+        left: var(--end-left);
+        content: "🫳";
+        opacity: 0;
+    }
+}
+
+.mao-animando {
+    animation: arrastar-mao 2.5s infinite ease-in-out;
+}
+
+/* Container da Álgebra ao lado da viga */
+.tutorial-algebra {
+    position: absolute;
+    left: calc(100% + 20px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border: 3px solid #2bc48a;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+    z-index: 10000;
+    display: none; /* Ativado via JS */
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: translateY(-50%) scale(0.8); opacity: 0; }
+    to { transform: translateY(-50%) scale(1); opacity: 1; }
+}
+
+/* Brilho pulsante dourado para o painel de conquistas */
+/* Adicione no final do style.css */
+.conquista-brilho-tutorial {
+    animation: pulseGold 1.5s infinite alternate !important;
+    border: 4px solid #ffd700 !important;
+    box-shadow: 0 0 30px #ffd700 !important;
+    transform: scale(1.05);
+    z-index: 10001 !important;
+}
+
+@keyframes pulseGold {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.3); }
+}
+
+html, body, .container {
+    scroll-behavior: smooth; /* Permite o deslize suave da câmara */
 }
