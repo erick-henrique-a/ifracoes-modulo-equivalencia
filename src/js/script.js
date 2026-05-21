@@ -207,7 +207,7 @@ class JogoFracoes {
         const vigaContainer = document.getElementById('viga-container');
         if (!vigaContainer) return;
         
-        // CORREÇÃO AQUI: Garante que o dragover executa sempre o preventDefault()
+        //Garante que o dragover executa sempre o preventDefault()
         vigaContainer.addEventListener('dragover', (e) => {
             e.preventDefault(); 
         });
@@ -216,7 +216,39 @@ class JogoFracoes {
             e.preventDefault();
             const index = parseInt(e.dataTransfer.getData('indexEstoque'));
             const chave = e.dataTransfer.getData('chaveBloco');
-            
+            const caracteristicas = this.tiposBlocos[chave];
+
+            if (!caracteristicas) return;
+
+            // 1. Calcula quanto a viga já tem atualmente
+            const totalVigaAtual = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
+
+            //2. Verifica se somando o novo bloco ultrapassa 1 inteiro
+            if (totalVigaAtual + caracteristicas.fracao > 1.001) {
+                // 1. Aplica a classe de cor vermelha que você já usa na atualizarUI
+                vigaContainer.classList.add('sobrecarga');
+                // 2. Aplica a classe para tremer (vamos criar no CSS abaixo)
+                vigaContainer.classList.add('tremer-viga');
+                
+                // 3. Atualiza o texto do status para avisar o jogador
+                const status = document.getElementById('status-mensagem');
+                if (status) {
+                    status.textContent = '⚠️ Você colocou demais! O bloco não cabe na coluna de 1 inteiro.';
+                    status.className = 'status-mensagem quase';
+                }
+
+                // 4. Remove os efeitos visuais após 500ms (tempo da animação)
+                setTimeout(() => {
+                    vigaContainer.classList.remove('tremer-viga');
+                    // Só remove a cor vermelha se a viga original já não estivesse cheia antes
+                    if (totalVigaAtual <= 1.001) {
+                        vigaContainer.classList.remove('sobrecarga');
+                    }
+                }, 500);
+
+                return; // Impede adicionar mais blocos se ultrapassar o alvo
+            }
+
             // Se o tutorial estiver ativo
             if (this.tutorial && this.tutorial.ativo) {
                 // Se for o passo 3 e o bloco correto for o 1/2
@@ -232,7 +264,7 @@ class JogoFracoes {
             }
 
             // Comportamento normal do jogo (fora do tutorial)
-            const caracteristicas = this.tiposBlocos[chave];
+            
             if (caracteristicas) {
                 this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
                 this.renderizarBlocos();
@@ -320,6 +352,7 @@ class JogoFracoes {
         vigaConstruida.innerHTML = '<div class="placeholder-text">Arraste os blocos aqui para construir!</div>';
         return;
     }
+
 
      // Gera o HTML de todos os blocos colocados
     const blocosHTML = this.vigaAtual.map(bloco => {
