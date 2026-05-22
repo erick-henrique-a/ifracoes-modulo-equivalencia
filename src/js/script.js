@@ -1,10 +1,11 @@
 class JogoFracoes {
     constructor() {
+        // console.log("construtor rodou!");
         this.faseAtual = 1;
         this.fasesCompletadas = 0;
         this.vigaAtual = [];
-        
-                
+
+
         // Definição das fases (cada fase tem um alvo em frações)
         this.fases = [
             // Agora cada fase tem seu próprio "estoque" de blocos (array de strings)
@@ -12,42 +13,43 @@ class JogoFracoes {
             // Nível 1
             { numero: 1, alvo: 1, descricao: '1', estoque: ['1/2', '1/2', '1/2', '1/2'] },
             { numero: 2, alvo: 1, descricao: '1', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4', '1/4'] },
-            { numero: 3, alvo: 3/4, descricao: '3/4', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
-            { numero: 4, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/4', '1/4', '1/4'] },
-            { numero: 5, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/2', '1/4', '1/4'] },
-            { numero: 6, alvo: 1, descricao: '1', estoque: ['1/2', '1/4', '1/4','1/4'] },
+            { numero: 3, alvo: 3 / 4, descricao: '3/4', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
+            { numero: 4, alvo: 1 / 2, descricao: '1/2', estoque: ['1/4', '1/4', '1/4', '1/4'] },
+            { numero: 5, alvo: 3 / 4, descricao: '3/4', estoque: ['1/2', '1/2', '1/4', '1/4'] },
+            { numero: 6, alvo: 1, descricao: '1', estoque: ['1/2', '1/4', '1/4', '1/4'] },
 
             //Nível 2: Introduzir 1/8
-            { numero: 7, alvo: 1, descricao: '1', estoque: ['1/8', '1/8', '1/8', '1/8','1/8', '1/8', '1/8', '1/8','1/8', '1/8'] },
-            { numero: 8, alvo: 1/4, descricao: '1/4', estoque: ['1/2', '1/8', '1/8','1/8'] },
-            { numero: 9, alvo: 3/8, descricao: '3/8', estoque: ['1/2', '1/8', '1/8', '1/8','1/8'] },
-            { numero: 10, alvo: 1/2, descricao: '1/2', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },          
-            { numero: 11, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/8', '1/8', '1/8'] },            
-            { numero: 12, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4', '1/8'] },
-            { numero: 13, alvo: 3/8, descricao: '3/8', estoque: ['1/4', '1/8', '1/4', '1/2'] },
-            { numero: 14, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8','1/8'] },
-            { numero: 15, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/8', '1/4', '1/8', '1/8'] },
-            { numero: 16, alvo: 5/8, descricao: '5/8', estoque: ['1/8', '1/4', '1/4', '1/4'] },
-            { numero: 17, alvo: 3/4, descricao: '3/4', estoque: ['1/8', '1/8', '1/2', '1/2'] },
-            
+            { numero: 7, alvo: 1, descricao: '1', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },
+            { numero: 8, alvo: 1 / 4, descricao: '1/4', estoque: ['1/2', '1/8', '1/8', '1/8'] },
+            { numero: 9, alvo: 3 / 8, descricao: '3/8', estoque: ['1/2', '1/8', '1/8', '1/8', '1/8'] },
+            { numero: 10, alvo: 1 / 2, descricao: '1/2', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },
+            { numero: 11, alvo: 1 / 2, descricao: '1/2', estoque: ['1/4', '1/8', '1/8', '1/8'] },
+            { numero: 12, alvo: 3 / 4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4', '1/8'] },
+            { numero: 13, alvo: 3 / 8, descricao: '3/8', estoque: ['1/4', '1/8', '1/4', '1/2'] },
+            { numero: 14, alvo: 5 / 8, descricao: '5/8', estoque: ['1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8', '1/8'] },
+            { numero: 15, alvo: 5 / 8, descricao: '5/8', estoque: ['1/8', '1/8', '1/4', '1/8', '1/8'] },
+            { numero: 16, alvo: 5 / 8, descricao: '5/8', estoque: ['1/8', '1/4', '1/4', '1/4'] },
+            { numero: 17, alvo: 3 / 4, descricao: '3/4', estoque: ['1/8', '1/8', '1/2', '1/2'] },
+            { numero: 18, alvo: 7 / 8, descricao: '7/8', estoque: ['1/2', '1/4', '1/8', '1/8'] },
+
             // ... adicione as outras fases seguindo este padrão
             //Nível 3: Introduzir 1/3, 1/6, 1/9
 
-            
+
         ];
 
         // Tipos de blocos disponíveis
         this.tiposBlocos = {
-            '1/2': { fracao: 1/2, label: '1/2', classe: 'bloco-meia'},
-            '1/3': { fracao: 1/3, label: '1/3', classe: 'bloco-um-terco'},
-            '1/4': { fracao: 1/4, label: '1/4', classe: 'bloco-um-quarto'},
-            '1/5': { fracao: 1/5, label: '1/5', classe: 'bloco-um-quinto'},
-            '1/6': { fracao: 1/6, label: '1/6', classe: 'bloco-um-sexto'},
-            '1/7': { fracao: 1/7, label: '1/7', classe: 'bloco-um-setimo'},
-            '1/8': { fracao: 1/8, label: '1/8', classe: 'bloco-um-oitavo'},
-            '1/9': { fracao: 1/9, label: '1/9', classe: 'bloco-um-nono'},
-            '1/10': { fracao: 1/10, label: '1/10', classe: 'bloco-um-dez-avos'},
-            
+            '1/2': { fracao: 1 / 2, label: '1/2', classe: 'bloco-meia' },
+            '1/3': { fracao: 1 / 3, label: '1/3', classe: 'bloco-um-terco' },
+            '1/4': { fracao: 1 / 4, label: '1/4', classe: 'bloco-um-quarto' },
+            '1/5': { fracao: 1 / 5, label: '1/5', classe: 'bloco-um-quinto' },
+            '1/6': { fracao: 1 / 6, label: '1/6', classe: 'bloco-um-sexto' },
+            '1/7': { fracao: 1 / 7, label: '1/7', classe: 'bloco-um-setimo' },
+            '1/8': { fracao: 1 / 8, label: '1/8', classe: 'bloco-um-oitavo' },
+            '1/9': { fracao: 1 / 9, label: '1/9', classe: 'bloco-um-nono' },
+            '1/10': { fracao: 1 / 10, label: '1/10', classe: 'bloco-um-dez-avos' },
+
         };
 
         this.fracoesDesbloqueadas = new Set();
@@ -74,7 +76,7 @@ class JogoFracoes {
 
     abrirModalValidacao() {
         const vigaAtual = this.vigaAtual;
-        
+
         if (vigaAtual.length === 0) {
             alert('⚠️ Coloque alguns blocos na viga antes de validar!');
             return;
@@ -89,11 +91,11 @@ class JogoFracoes {
         const itensSomadosHTML = vigaAtual
             .map(b => this.formatarFracaoHTML(b.label))
             .join(' <span class="operador">+</span> ');
-        
+
         const resultadoFormatado = this.formatarFracao(totalViga);
         const resultadoHTML = this.formatarFracaoHTML(resultadoFormatado);
 
-        document.getElementById('validacao-expressao').innerHTML = 
+        document.getElementById('validacao-expressao').innerHTML =
             `${itensSomadosHTML} <span class="operador">=</span> ${resultadoHTML}`;
 
         // Exibe o resultado (check ou X)
@@ -103,7 +105,7 @@ class JogoFracoes {
                 <div class="validacao-check">✅</div>
                 <div class="validacao-mensagem">Resposta Correta!</div>
             `;
-            
+
             // Mostra o botão "Próxima Fase" e esconde o "Limpar"
             document.getElementById('btn-proxima-validacao').style.display = 'block';
             document.getElementById('btn-limpar-validacao').classList.remove('show');
@@ -133,7 +135,7 @@ class JogoFracoes {
         }
     }
 
-    inicializar() {    
+    inicializar() {
         this.renderizarBlocos();
         this.configurarDragAndDrop();
         this.renderizarDesbloqueios();
@@ -145,14 +147,14 @@ class JogoFracoes {
     proximaFase() {
         if (this.faseAtual < this.fases.length) {
             this.fasesCompletadas++;
-            
+
             // CORREÇÃO: Registra APENAS as frações que estão atualmente construídas na viga
             if (this.faseAtual === 1) {
                 this.fracoesDesbloqueadas.add('1/2');
             } else {
                 this.vigaAtual.forEach(bloco => {
                     this.fracoesDesbloqueadas.add(bloco.label);
-                }); 
+                });
             }
 
             this.renderizarDesbloqueios();
@@ -160,6 +162,11 @@ class JogoFracoes {
             this.vigaAtual = [];
             this.renderizarBlocos();
             this.atualizarUI();
+
+            if (this.faseAtual === 5) {
+                // Pequeno atraso para garantir que o DOM já foi atualizado
+                setTimeout(() => this.tutorial.iniciar(), 100);
+            }
         } else {
             alert('🎉 Parabéns! Você completou todas as fases!');
             this.faseAtual = 1;
@@ -173,10 +180,10 @@ class JogoFracoes {
     renderizarBlocos() {
         const container = document.getElementById('blocos-container');
         container.innerHTML = '<div class="blocos-title">🧱 Blocos Disponíveis</div>';
-        
+
         // Pega a fase atual baseada no índice
         const fase = this.fases[this.faseAtual - 1];
-        
+
         fase.estoque.forEach((chave, index) => {
             const caracteristicas = this.tiposBlocos[chave];
             if (!caracteristicas) return;
@@ -187,13 +194,13 @@ class JogoFracoes {
             bloco.className = `bloco ${caracteristicas.classe} ${jaUsado ? 'usado' : ''}`;
             bloco.style.height = `${caracteristicas.fracao * 80}%`;
             bloco.style.width = '110px';
-                
+
             if (!jaUsado) {
-            bloco.setAttribute('draggable', 'true');
-            bloco.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('indexEstoque', index);
-                e.dataTransfer.setData('chaveBloco', chave);
-            });
+                bloco.setAttribute('draggable', 'true');
+                bloco.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('indexEstoque', index);
+                    e.dataTransfer.setData('chaveBloco', chave);
+                });
             }
 
             if (this.tutorial && this.tutorial.ativo && this.tutorial.passoAtual === 5 && chave === '1/2') {
@@ -244,23 +251,23 @@ class JogoFracoes {
     renderizarDesbloqueios() {
         // Buscamos apenas os itens que estão marcados como bloqueados atualmente
         const itensBloqueados = document.querySelectorAll('.conquista-item.bloqueado');
-        
+
         itensBloqueados.forEach(containerItem => {
             const chave = containerItem.dataset.fracaoChave;
-            
+
             // Se o jogador acabou de desbloquear esta fração
             if (this.fracoesDesbloqueadas.has(chave)) {
                 // Remove o estado de bloqueado e aplica o descoberto
                 containerItem.className = 'conquista-item descoberto';
                 containerItem.removeAttribute('title');
-                
+
                 const denominador = parseInt(chave.split('/')[1]);
                 let blocosInternosHTML = `<div class="mini-inteiro-container">`;
-                
+
                 for (let i = 0; i < denominador; i++) {
                     const classeCor = this.tiposBlocos[chave]?.classe || '';
                     const textoFormatadoHTML = this.formatarFracaoHTML(chave);
-                    
+
                     blocosInternosHTML += `
                         <div class="mini-bloco-divisao ${classeCor}">
                             <div class="mini-texto-wrapper">
@@ -269,7 +276,7 @@ class JogoFracoes {
                         </div>
                     `;
                 }
-                
+
                 blocosInternosHTML += `</div>`;
                 // Insere o conteúdo colorido apenas nesta caixa específica
                 containerItem.innerHTML = blocosInternosHTML;
@@ -278,73 +285,81 @@ class JogoFracoes {
     }
 
     configurarDragAndDrop() {
-        const vigaContainer = document.getElementById('viga-container');
-        if (!vigaContainer) return;
-        
-        //Garante que o dragover executa sempre o preventDefault()
-        vigaContainer.addEventListener('dragover', (e) => {
-            e.preventDefault(); 
-        });
+    const vigaContainer = document.getElementById('viga-container');
+    if (!vigaContainer) return;
 
-        vigaContainer.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const index = parseInt(e.dataTransfer.getData('indexEstoque'));
-            const chave = e.dataTransfer.getData('chaveBloco');
-            const caracteristicas = this.tiposBlocos[chave];
+    vigaContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
 
-            if (!caracteristicas) return;
+    vigaContainer.addEventListener('drop', (e) => {
+        e.preventDefault();
 
-            // 1. Calcula quanto a viga já tem atualmente
-            const totalVigaAtual = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
+        // Extrair dados SEMPRE (antes de qualquer verificação)
+        const index = parseInt(e.dataTransfer.getData('indexEstoque'));
+        const chave = e.dataTransfer.getData('chaveBloco');
+        const caracteristicas = this.tiposBlocos[chave];
+        if (!caracteristicas) return;
 
-            //2. Verifica se somando o novo bloco ultrapassa 1 inteiro
-            if (totalVigaAtual + caracteristicas.fracao > 1.001) {
-                // 1. Aplica a classe de cor vermelha que você já usa na atualizarUI
-                vigaContainer.classList.add('sobrecarga');
-                // 2. Aplica a classe para tremer (vamos criar no CSS abaixo)
-                vigaContainer.classList.add('tremer-viga');
-                
-                // 3. Atualiza o texto do status para avisar o jogador
-                const status = document.getElementById('status-mensagem');
-                if (status) {
-                    status.textContent = '⚠️ Você colocou demais! O bloco não cabe na coluna de 1 inteiro.';
-                    status.className = 'status-mensagem quase';
-                }
+        const totalVigaAtual = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
 
-                // 4. Remove os efeitos visuais após 500ms (tempo da animação)
-                setTimeout(() => {
-                    vigaContainer.classList.remove('tremer-viga');
-                    // Só remove a cor vermelha se a viga original já não estivesse cheia antes
-                    if (totalVigaAtual <= 1.001) {
-                        vigaContainer.classList.remove('sobrecarga');
-                    }
-                }, 500);
+        // ---------- TRATAMENTO DO TUTORIAL ----------
+        if (this.tutorial && this.tutorial.ativo) {
+            const tut = this.tutorial;
 
-                return; // Impede adicionar mais blocos se ultrapassar o alvo
-            }
-
-            // Se o tutorial estiver ativo
-            if (this.tutorial && this.tutorial.ativo) {
-                // Se for o passo 5 ou 6 e o bloco correto for o 1/2
-                if ((this.tutorial.passoAtual === 5 || this.tutorial.passoAtual === 6) && chave === '1/2') {
-                    const caracteristicas = this.tiposBlocos[chave];
-                    this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
-                    this.renderizarBlocos();
-                    this.tutorial.proximoPasso();
-                    return;
-                } else {
-                    return; // Bloqueia outros blocos durante o tutorial
-                }
-            }
-
-            // Comportamento normal do jogo (fora do tutorial)
-            
-            if (caracteristicas) {
+            // Tutorial Fase 1: passo 5 ou 6 (arrastar 1/2)
+            if (tut.tutorialAtivo === 'fase1' && (tut.passoAtual === 5 || tut.passoAtual === 6) && chave === '1/2') {
                 this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
                 this.renderizarBlocos();
+                tut.proximoPasso();
+                return;
             }
-        });
-    }
+
+            // Tutorial Fase 5: passo 4 (arrastar 1/2) ou passo 5 (arrastar 1/4)
+            if (tut.tutorialAtivo === 'fase5' && (tut.passoAtualFase5 === 4 || tut.passoAtualFase5 === 5)) {
+                const esperado4 = (tut.passoAtualFase5 === 4 && chave === '1/2');
+                const esperado5 = (tut.passoAtualFase5 === 5 && chave === '1/4');
+
+                if (esperado4 || esperado5) {
+                    this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
+                    this.renderizarBlocos();
+                    tut.proximoPasso();
+                    return;
+                } else {
+                    const status = document.getElementById('status-mensagem');
+                    if (status) {
+                        status.textContent = '🔍 Tente arrastar o bloco indicado pelo tutorial!';
+                        status.className = 'status-mensagem quase';
+                    }
+                    return;
+                }
+            }
+
+            // Qualquer outro passo do tutorial bloqueia todos os drops
+            return;
+        }
+
+        // ---------- COMPORTAMENTO NORMAL (FORA DO TUTORIAL) ----------
+        if (totalVigaAtual + caracteristicas.fracao > 1.001) {
+            vigaContainer.classList.add('sobrecarga', 'tremer-viga');
+            const status = document.getElementById('status-mensagem');
+            if (status) {
+                status.textContent = '⚠️ Você colocou demais! O bloco não cabe na coluna de 1 inteiro.';
+                status.className = 'status-mensagem quase';
+            }
+            setTimeout(() => {
+                vigaContainer.classList.remove('tremer-viga');
+                if (totalVigaAtual <= 1.001) {
+                    vigaContainer.classList.remove('sobrecarga');
+                }
+            }, 500);
+            return;
+        }
+
+        this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
+        this.renderizarBlocos();
+    });
+}
 
     adicionarBlocoAViga(fracao, label, classe, indexOriginal) {
         this.vigaAtual.push({
@@ -383,10 +398,10 @@ class JogoFracoes {
         if (barraFaseFill) {
             barraFaseFill.style.width = `${percentualFases}%`;
         }
-        
+
         // Calcular total da viga
         const totalViga = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
-        
+
         const painelSoma = document.getElementById('viga-soma-algebrica');
         if (painelSoma) {
             if (this.vigaAtual.length === 0) {
@@ -424,18 +439,18 @@ class JogoFracoes {
             const balaoTexto = document.getElementById('balao-alvo-texto');
             if (balaoTexto) {
                 balaoTexto.innerHTML = `Alvo: ${this.formatarFracaoHTML(faseAtual.descricao)}`;
-        }
-        // Brilhar verde se atingir o alvo exato
+            }
+            // Brilhar verde se atingir o alvo exato
             if (Math.abs(totalViga - faseAtual.alvo) < 0.001) {
                 linhaAlvo.classList.add('alvo-atingido');
             } else {
                 linhaAlvo.classList.remove('alvo-atingido');
             }
         }
-        
+
         const vigaContainer = document.getElementById('viga-container');
         if (vigaContainer) {
-        // Viga racha (fica vermelha) se passar de 1 inteiro
+            // Viga racha (fica vermelha) se passar de 1 inteiro
             if (totalViga > 1.001) {
                 vigaContainer.classList.add('sobrecarga');
             } else {
@@ -445,27 +460,27 @@ class JogoFracoes {
 
         // Atualizar viga construída
         this.renderizarVigaConstruida(totalViga);
-        
+
         // Atualizar status
         this.atualizarStatus(totalViga, faseAtual.alvo);
-                
+
     }
 
     renderizarVigaConstruida(total) {
-    const vigaConstruida = document.getElementById('viga-construida');
-    
-    if (this.vigaAtual.length === 0) {
-        vigaConstruida.innerHTML = '<div class="placeholder-text">Arraste os blocos aqui para construir!</div>';
-        return;
-    }
+        const vigaConstruida = document.getElementById('viga-construida');
+
+        if (this.vigaAtual.length === 0) {
+            vigaConstruida.innerHTML = '<div class="placeholder-text">Arraste os blocos aqui para construir!</div>';
+            return;
+        }
 
 
-     // Gera o HTML de todos os blocos colocados
-    const blocosHTML = this.vigaAtual.map(bloco => {
-        // Multiplicamos por 100 para ter a porcentagem relativa ao "inteiro" (1.0)
-        const alturaPercentual = bloco.fracao * 100;
-        const labelFormatado = this.formatarFracaoHTML ? this.formatarFracaoHTML(bloco.label) : bloco.label;
-        return `
+        // Gera o HTML de todos os blocos colocados
+        const blocosHTML = this.vigaAtual.map(bloco => {
+            // Multiplicamos por 100 para ter a porcentagem relativa ao "inteiro" (1.0)
+            const alturaPercentual = bloco.fracao * 100;
+            const labelFormatado = this.formatarFracaoHTML ? this.formatarFracaoHTML(bloco.label) : bloco.label;
+            return `
             <div class="bloco-colocado ${bloco.classe}" 
                  style="height: ${alturaPercentual}%; width: 100%;" 
                  onclick="game.removerBlocoViga(${bloco.id})"
@@ -473,15 +488,15 @@ class JogoFracoes {
                 ${labelFormatado}
             </div>
         `;
-    }).join('');
+        }).join('');
 
         vigaConstruida.innerHTML = blocosHTML;
 
         // Adicionar exibição do total
         const totalDiv = document.createElement('div');
-                
+
         vigaConstruida.appendChild(totalDiv);
-    }    
+    }
 
     atualizarStatus(total, alvo) {
         const status = document.getElementById('status-mensagem');
@@ -530,21 +545,21 @@ class JogoFracoes {
     formatarFracao(valor) {
         // Converter decimal para fração aproximada
         const fracoes = [
-            { decimal: 1/16, display: '1/16' },
-            { decimal: 1/12, display: '1/12' },
-            { decimal: 1/8, display: '1/8' },
-            { decimal: 1/6, display: '1/6' },
-            { decimal: 1/4, display: '1/4' },
-            { decimal: 1/3, display: '1/3' },
-            { decimal: 3/8, display: '3/8' },
-            { decimal: 1/2, display: '1/2' },
-            { decimal: 5/8, display: '5/8' },
-            { decimal: 2/3, display: '2/3' },
-            { decimal: 3/4, display: '3/4' },
-            { decimal: 5/6, display: '5/6' },
-            { decimal: 7/8, display: '7/8' },
-            { decimal: 11/12, display: '11/12' },
-            { decimal: 13/16, display: '13/16' },
+            { decimal: 1 / 16, display: '1/16' },
+            { decimal: 1 / 12, display: '1/12' },
+            { decimal: 1 / 8, display: '1/8' },
+            { decimal: 1 / 6, display: '1/6' },
+            { decimal: 1 / 4, display: '1/4' },
+            { decimal: 1 / 3, display: '1/3' },
+            { decimal: 3 / 8, display: '3/8' },
+            { decimal: 1 / 2, display: '1/2' },
+            { decimal: 5 / 8, display: '5/8' },
+            { decimal: 2 / 3, display: '2/3' },
+            { decimal: 3 / 4, display: '3/4' },
+            { decimal: 5 / 6, display: '5/6' },
+            { decimal: 7 / 8, display: '7/8' },
+            { decimal: 11 / 12, display: '11/12' },
+            { decimal: 13 / 16, display: '13/16' },
             { decimal: 1, display: '4/4' }
         ];
 
@@ -558,9 +573,9 @@ class JogoFracoes {
     }
 
     formatarFracaoHTML(texto) {
-    if (!texto.includes('/')) return texto;
-    const [num, den] = texto.split('/');
-    return `
+        if (!texto.includes('/')) return texto;
+        const [num, den] = texto.split('/');
+        return `
         <span class="fracao-estilizada">
             <span class="numerador">${num}</span>
             <span class="denominador">${den}</span>
@@ -575,7 +590,9 @@ class TutorialGerenciador {
         this.jogo = jogo;
         this.passoAtual = 0;
         this.ativo = false;
-        
+        this.tutorialAtivo = null;   // 'fase1' ou 'fase5'
+        this.passoAtualFase5 = 0;
+
         this.overlay = document.getElementById('tutorial-overlay');
         this.balao = document.getElementById('tutorial-balao');
         this.texto = document.getElementById('tutorial-texto');
@@ -585,22 +602,41 @@ class TutorialGerenciador {
     }
 
     iniciar() {
-        if (this.jogo.faseAtual !== 1) return;
-        this.ativo = true;
-        this.passoAtual = 0;
-        if (this.overlay) this.overlay.style.display = 'block';
-        this.proximoPasso();
+        if (this.jogo.faseAtual === 1) {
+            this.tutorialAtivo = 'fase1';
+            this.passoAtual = 0;
+            this.ativo = true;
+            if (this.overlay) this.overlay.style.display = 'block';
+            this.proximoPassoFase1();
+        } else if (this.jogo.faseAtual === 5) {
+            this.tutorialAtivo = 'fase5';
+            this.passoAtualFase5 = 0;
+            this.ativo = true;
+            if (this.overlay) this.overlay.style.display = 'block';
+            this.proximoPassoFase5();
+        }
+        // outras fases podem ser adicionadas no futuro
     }
 
+    // Chamado pelo botão "Avançar" / "Pular"
     proximoPasso() {
+        if (this.tutorialAtivo === 'fase1') {
+            this.proximoPassoFase1();
+        } else if (this.tutorialAtivo === 'fase5') {
+            this.proximoPassoFase5();
+        }
+    }
+
+
+    proximoPassoFase1() {
         this.passoAtual++;
         this.limparDestaques();
 
-        if (this.btn) this.btn.style.display = 'block'; 
+        if (this.btn) this.btn.style.display = 'block';
 
         if (this.passoAtual === 1) {
             this.mostrarBalao("Olá, matemático! Este é um jogo de frações.", "center");
-        } 
+        }
         else if (this.passoAtual === 2) {
             const viga = document.getElementById('viga-container');
             if (viga) {
@@ -640,7 +676,7 @@ class TutorialGerenciador {
                 this.btn.style.display = 'block';
                 this.btn.textContent = "Pular";
             }
-            
+
             const conteinerBlocos = document.getElementById('blocos-container');
             if (conteinerBlocos) conteinerBlocos.classList.add('tutorial-destaque');
             document.getElementById('viga-container')?.classList.add('tutorial-destaque');
@@ -650,18 +686,18 @@ class TutorialGerenciador {
             if (blocoMeio) {
                 blocoMeio.classList.add('bloco-piscar');
                 blocoMeio.classList.add('tutorial-destaque');
-                this.mostrarBalao("Para começar, vá ao painel de blocos e arraste este bloco de " + 
-                this.jogo.formatarFracaoHTML('1/2') + " (uma metade)    para dentro da coluna central.", 
-                "right", 
-                blocoMeio);
-                
+                this.mostrarBalao("Para começar, vá ao painel de blocos e arraste este bloco de " +
+                    this.jogo.formatarFracaoHTML('1/2') + " (uma metade)    para dentro da coluna central.",
+                    "right",
+                    blocoMeio);
+
                 setTimeout(() => {
                     this.iniciarAnimacaoMao(blocoMeio, document.getElementById('viga-container'));
                 }, 100);
             } else {
-                this.proximoPasso(); 
+                this.proximoPasso();
             }
-        } 
+        }
         else if (this.passoAtual === 6) {
             if (this.btn) {
                 this.btn.style.display = 'block';
@@ -672,14 +708,14 @@ class TutorialGerenciador {
             const conteinerBlocos = document.getElementById('blocos-container');
             if (conteinerBlocos) conteinerBlocos.classList.add('tutorial-destaque');
             document.getElementById('viga-container')?.classList.add('tutorial-destaque');
-            
+
             const proximoBlocoMeio = document.querySelector('.bloco.bloco-meia:not(.usado)');
 
             if (proximoBlocoMeio) {
                 proximoBlocoMeio.classList.add('bloco-piscar');
                 proximoBlocoMeio.classList.add('tutorial-destaque');
                 this.mostrarBalao("Excelente! Agora arraste o <b>outro bloco de " + this.jogo.formatarFracaoHTML('1/2') + "</b> para completar 1 inteiro do alvo da coluna!", "right", proximoBlocoMeio);
-                
+
                 setTimeout(() => {
                     this.iniciarAnimacaoMao(proximoBlocoMeio, document.getElementById('viga-container'));
                 }, 100);
@@ -696,7 +732,7 @@ class TutorialGerenciador {
             }
 
             document.getElementById('viga-container')?.classList.add('tutorial-destaque');
-            
+
             if (this.algebraBox) {
                 this.algebraBox.style.display = 'block';
                 this.algebraBox.innerHTML = `
@@ -715,9 +751,9 @@ class TutorialGerenciador {
 
             this.mostrarBalao(
                 "Você completou a coluna com sucesso!<br>" +
-                "Veja que, (" + 
-                this.jogo.formatarFracaoHTML('1/2') + " + " + this.jogo.formatarFracaoHTML('1/2') + ") = " + this.jogo.formatarFracaoHTML('2/2') + " = 1, isto é, 2 blocos de " + this.jogo.formatarFracaoHTML('1/2') + " correspondem exatamente à fração alvo de 1 inteiro.", 
-                "top", 
+                "Veja que, (" +
+                this.jogo.formatarFracaoHTML('1/2') + " + " + this.jogo.formatarFracaoHTML('1/2') + ") = " + this.jogo.formatarFracaoHTML('2/2') + " = 1, isto é, 2 blocos de " + this.jogo.formatarFracaoHTML('1/2') + " correspondem exatamente à fração alvo de 1 inteiro.",
+                "top",
                 document.getElementById('viga-container')
             );
         }
@@ -727,7 +763,7 @@ class TutorialGerenciador {
                 this.btn.style.display = 'block';
                 this.btn.textContent = "Avançar";
             }
-            
+
             this.jogo.fracoesDesbloqueadas.add('1/2');
             this.jogo.renderizarDesbloqueios();
 
@@ -735,7 +771,7 @@ class TutorialGerenciador {
             if (btnConquistas) {
                 btnConquistas.classList.add('tutorial-destaque');
             }
-            
+
             this.mostrarBalao(
                 "Excelente! Você desbloqueou um item! 🔓 Veja o botão de <b>Conquistas</b> no painel direito. Clique nele para ver seus itens desbloqueados!",
                 "down"
@@ -771,9 +807,214 @@ class TutorialGerenciador {
         }
     }
 
+    // ========== NOVO TUTORIAL DA FASE 5 ==========
+    proximoPassoFase5() {
+        this.passoAtualFase5++;
+        this.limparDestaques();
+        if (this.mao) this.mao.style.display = 'none';
+        if (this.algebraBox) this.algebraBox.style.display = 'none';
+
+        // O botão do tutorial sempre visível para prosseguir
+        if (this.btn) {
+            this.btn.style.display = 'block';
+            this.btn.textContent = 'Avançar';
+        }
+
+        switch (this.passoAtualFase5) {
+            case 1:
+                this.mostrarBalao(
+                    "Muito bem, Engenheiro! Agora precisamos construir uma coluna de tamanho " +
+                    this.jogo.formatarFracaoHTML('3/4') +
+                    ". Olhe o seu estoque: temos 2 blocos azuis de " +
+                    this.jogo.formatarFracaoHTML('1/2') +
+                    " e 2 blocos roxos de " +
+                    this.jogo.formatarFracaoHTML('1/4') +
+                    ". E agora? Eles têm tamanhos diferentes! Como vamos somar isso?",
+                    "center"
+                );
+                break;
+
+            case 2:
+                // Destacar o botão Conquistas
+                const btnConquistas = document.getElementById('btn-conquistas');
+                if (btnConquistas) {
+                    btnConquistas.classList.add('tutorial-destaque');
+                }
+                this.mostrarBalao(
+                    "Para somar frações, o ideal é que elas tenham o mesmo número embaixo (o mesmo denominador). " +
+                    "Vamos usar um truque visual! Abra o seu <b>Painel de Conquistas</b>.",
+                    "down"
+                );
+                if (this.btn) this.btn.textContent = "Pular";
+                break;
+
+            case 3:
+                this.mostrarBalao(
+                    "Lembra dos itens que você desbloqueou? Ele mostra que 1 bloco azul de " +
+                    this.jogo.formatarFracaoHTML('1/2') +
+                    " é do mesmo tamanho que 2 blocos roxos de " +
+                    this.jogo.formatarFracaoHTML('1/4') +
+                    "! Ou seja: " +
+                    this.jogo.formatarFracaoHTML('1/2') + " = " +
+                    this.jogo.formatarFracaoHTML('1/4') + " + " +
+                    this.jogo.formatarFracaoHTML('1/4') + " = " +
+                    this.jogo.formatarFracaoHTML('2/4') +
+                    ". Elas são <b>frações equivalentes</b> (têm o mesmo valor)!",
+                    "center"
+                );
+                break;
+
+            case 4:
+                // Destacar bloco azul (1/2) e instruir arraste
+                const blocoAzul = document.querySelector('.bloco.bloco-meia:not(.usado)');
+                if (blocoAzul) {
+                    blocoAzul.classList.add('bloco-piscar', 'tutorial-destaque');
+                    this.mostrarBalao(
+                        "Sabendo disso, vamos testar! Arraste primeiro um bloco azul de " +
+                        this.jogo.formatarFracaoHTML('1/2') +
+                        " (que corresponde a " +
+                        this.jogo.formatarFracaoHTML('1/4') + "+" + this.jogo.formatarFracaoHTML('1/4') +
+                        ") para a coluna.",
+                        "right",
+                        blocoAzul
+                    );
+                    setTimeout(() => {
+                        this.iniciarAnimacaoMao(blocoAzul, document.getElementById('viga-container'));
+                    }, 100);
+                } else {
+                    this.proximoPassoFase5();
+                }
+                if (this.btn) this.btn.textContent = "Pular";
+                break;
+
+            case 5:
+                // Destacar bloco roxo (1/4) e instruir arraste
+                const blocoRoxo = document.querySelector('.bloco.bloco-quarto:not(.usado)');
+                if (blocoRoxo) {
+                    blocoRoxo.classList.add('bloco-piscar', 'tutorial-destaque');
+                    this.mostrarBalao(
+                        "Agora, para terminar de chegar ao alvo de " +
+                        this.jogo.formatarFracaoHTML('3/4') +
+                        ", arraste um bloco roxo de " +
+                        this.jogo.formatarFracaoHTML('1/4') +
+                        " para cima do azul.",
+                        "right",
+                        blocoRoxo
+                    );
+                    setTimeout(() => {
+                        this.iniciarAnimacaoMao(blocoRoxo, document.getElementById('viga-container'));
+                    }, 100);
+                } else {
+                    this.proximoPassoFase5();
+                }
+                if (this.btn) this.btn.textContent = "Pular";
+                break;
+
+            case 6:
+                // Exibir explicação algébrica
+                if (this.algebraBox) {
+                    this.algebraBox.style.display = 'block';
+                    this.algebraBox.innerHTML = `
+                        <span style="color:#764ba2; font-size:14px;">Prancheta de Contas:</span><br>
+                        <span style="font-size:20px;">
+                            ${this.jogo.formatarFracaoHTML('2/4')} + ${this.jogo.formatarFracaoHTML('1/4')} = ${this.jogo.formatarFracaoHTML('3/4')}
+                        </span>
+                    `;
+                }
+                this.mostrarBalao(
+                    "Olhe a mágica na Prancheta de Contas! Como o bloco de " +
+                    this.jogo.formatarFracaoHTML('1/2') +
+                    " vale a mesma coisa que " +
+                    this.jogo.formatarFracaoHTML('1/4') + "+" + this.jogo.formatarFracaoHTML('1/4') +
+                    ", a conta virou: " +
+                    this.jogo.formatarFracaoHTML('2/4') + " + " + this.jogo.formatarFracaoHTML('1/4') + " = " + this.jogo.formatarFracaoHTML('3/4') +
+                    ". Conseguimos o tamanho exato do alvo! É assim que realizamos a soma de frações com denominadores diferentes, precisamos “transformá-la” para todas terem o mesmo denominador.",
+                    "top",
+                    document.getElementById('viga-container')
+                );
+                if (this.btn) this.btn.textContent = "Entendi!";
+                break;
+
+            case 7:
+                // Introdução à propriedade comutativa
+                this.mostrarBalao(
+                    "Mas espere... e se a gente tivesse construído essa coluna de um jeito diferente? Vamos fazer um experimento de engenharia!",
+                    "center"
+                );
+                break;
+
+            case 8:
+                // Pedir para inverter a ordem dos blocos
+                const viga = document.getElementById('viga-container');
+                if (viga) viga.classList.add('tutorial-destaque');
+
+                // Destacar novamente os blocos (mesmo que já estejam usados, o destaque visual ajuda)
+                const blocoRoxo2 = document.querySelector('.bloco.bloco-quarto');
+                const blocoAzul2 = document.querySelector('.bloco.bloco-meia');
+                if (blocoRoxo2) blocoRoxo2.classList.add('tutorial-destaque', 'bloco-piscar');
+                if (blocoAzul2) blocoAzul2.classList.add('tutorial-destaque');
+
+                this.mostrarBalao(
+                    "Retire os blocos e, desta vez, coloque o bloco roxo de " +
+                    this.jogo.formatarFracaoHTML('1/4') +
+                    " primeiro, lá embaixo, e o azul de " +
+                    this.jogo.formatarFracaoHTML('1/2') +
+                    " por cima.",
+                    "center"
+                );
+                if (this.btn) this.btn.textContent = "Pular";
+                break;
+
+            case 9:
+                // Mostrar a igualdade comutativa
+                if (this.algebraBox) {
+                    this.algebraBox.style.display = 'block';
+                    this.algebraBox.innerHTML = `
+                        <span style="color:#764ba2; font-size:14px;">Propriedade Comutativa:</span><br>
+                        <span style="font-size:20px;">
+                            ${this.jogo.formatarFracaoHTML('1/4')} + ${this.jogo.formatarFracaoHTML('2/4')} = ${this.jogo.formatarFracaoHTML('3/4')}
+                        </span>
+                    `;
+                }
+                this.mostrarBalao(
+                    "Olhe só! A coluna ficou exatamente do mesmo tamanho de antes, não foi? Na matemática, isso se chama <b>Propriedade Comutativa</b>. " +
+                    "Um nome chique para uma regra simples: a ordem dos blocos não muda o tamanho final da construção!<br>" +
+                    this.jogo.formatarFracaoHTML('1/4') + " + " + this.jogo.formatarFracaoHTML('2/4') +
+                    " é a mesma coisa que " +
+                    this.jogo.formatarFracaoHTML('2/4') + " + " + this.jogo.formatarFracaoHTML('1/4'),
+                    "top",
+                    document.getElementById('viga-container')
+                );
+                if (this.btn) this.btn.textContent = "Entendi!";
+                break;
+
+            case 10:
+                // Destacar botão Validar e encerrar
+                const btnValidar = document.getElementById('btn-validar');
+                if (btnValidar) {
+                    btnValidar.classList.add('tutorial-destaque');
+                }
+                this.mostrarBalao(
+                    "Clique em <b>Validar</b> para entregar mais essa obra perfeita!",
+                    "center"
+                );
+                if (this.btn) {
+                    this.btn.textContent = "Finalizar tutorial";
+                    this.btn.onclick = () => this.encerrar();  // ao clicar, encerra de vez
+                }
+                break;
+
+            default:
+                this.encerrar();
+                break;
+        }
+    }
+
+    // ========== MÉTODOS AUXILIARES (mantidos exatamente como estavam) ==========
+
     mostrarBalao(mensagem, posicao, elementoAlvo = null) {
         if (!this.balao || !this.texto) return;
-        
+
         this.balao.style.display = 'flex';
         this.texto.innerHTML = mensagem;
 
@@ -784,11 +1025,11 @@ class TutorialGerenciador {
                 const rect = container.getBoundingClientRect();
                 const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
+
                 // Posiciona no canto superior direito do container
                 const top = rect.top + scrollTop + 20;
                 const left = rect.right + scrollLeft - 620; // 600px (max-width) + 20px de margem
-                
+
                 this.balao.style.top = `${top}px`;
                 this.balao.style.left = `${left}px`;
                 this.balao.style.transform = "none";
@@ -808,7 +1049,7 @@ class TutorialGerenciador {
 
         const rectOrigem = origem.getBoundingClientRect();
         const rectDestino = destino.getBoundingClientRect();
-        
+
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
@@ -819,7 +1060,7 @@ class TutorialGerenciador {
 
         this.mao.style.display = 'block';
         this.mao.className = 'tutorial-mao';
-        void this.mao.offsetWidth; 
+        void this.mao.offsetWidth;
         this.mao.className = 'tutorial-mao mao-animando';
     }
 
@@ -842,14 +1083,18 @@ class TutorialGerenciador {
     encerrar() {
         this.ativo = false;
         this.passoAtual = 0;
+        this.passoAtualFase5 = 0;
+        this.tutorialAtivo = null;          // importante para a próxima chamada
         this.limparDestaques();
         if (this.overlay) this.overlay.style.display = 'none';
         if (this.balao) this.balao.style.display = 'none';
         if (this.mao) this.mao.style.display = 'none';
         if (this.algebraBox) this.algebraBox.style.display = 'none';
-        
+
+        // Apenas da fase 1: desbloqueia 1/2 se ainda não tiver
+        // (o jogo já cuida disso, mas podemos garantir)
         this.jogo.fracoesDesbloqueadas.add('1/2');
-        this.jogo.renderizarDesbloqueios(); 
+        this.jogo.renderizarDesbloqueios();
 
         const slotMetade = document.querySelector('[data-fracao-chave="1/2"]');
         if (slotMetade) {
@@ -862,8 +1107,7 @@ class TutorialGerenciador {
         document.getElementById('viga-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 }
-// Inicialização Global Única Correta
-// Remova a linha "const game = new JogoFracoes();" de onde ela está solta e use assim:
+// Inicialização Global
 window.addEventListener('DOMContentLoaded', () => {
     const game = new JogoFracoes();
     window.game = game; // Garante o escopo global
