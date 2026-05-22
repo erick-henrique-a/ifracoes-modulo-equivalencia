@@ -3,7 +3,7 @@ class JogoFracoes {
         this.faseAtual = 1;
         this.fasesCompletadas = 0;
         this.vigaAtual = [];
-
+        
                 
         // Definição das fases (cada fase tem um alvo em frações)
         this.fases = [
@@ -14,7 +14,7 @@ class JogoFracoes {
             { numero: 2, alvo: 1, descricao: '1', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4', '1/4'] },
             { numero: 3, alvo: 3/4, descricao: '3/4', estoque: ['1/4', '1/4', '1/4', '1/4', '1/4'] },
             { numero: 4, alvo: 1/2, descricao: '1/2', estoque: ['1/4', '1/4', '1/4', '1/4'] },
-            { numero: 5, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/4', '1/4'] },
+            { numero: 5, alvo: 3/4, descricao: '3/4', estoque: ['1/2', '1/2', '1/4', '1/4'] },
             { numero: 6, alvo: 1, descricao: '1', estoque: ['1/2', '1/4', '1/4','1/4'] },
 
             //Nível 2: Introduzir 1/8
@@ -196,7 +196,7 @@ class JogoFracoes {
             });
             }
 
-            if (this.tutorial && this.tutorial.ativo && this.tutorial.passoAtual === 3 && chave === '1/2') {
+            if (this.tutorial && this.tutorial.ativo && this.tutorial.passoAtual === 5 && chave === '1/2') {
                 bloco.style.position = 'relative';
                 bloco.style.zIndex = '99999';
             }
@@ -325,8 +325,8 @@ class JogoFracoes {
 
             // Se o tutorial estiver ativo
             if (this.tutorial && this.tutorial.ativo) {
-                // Se for o passo 3 e o bloco correto for o 1/2
-                if ((this.tutorial.passoAtual === 3 || this.tutorial.passoAtual === 4) && chave === '1/2') {
+                // Se for o passo 5 ou 6 e o bloco correto for o 1/2
+                if ((this.tutorial.passoAtual === 5 || this.tutorial.passoAtual === 6) && chave === '1/2') {
                     const caracteristicas = this.tiposBlocos[chave];
                     this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
                     this.renderizarBlocos();
@@ -420,7 +420,7 @@ class JogoFracoes {
         // Atualizar a Linha Alvo Visual
         const linhaAlvo = document.getElementById('linha-alvo');
         if (linhaAlvo) {
-            linhaAlvo.style.height = `${faseAtual.alvo * 100}%`;
+            //linhaAlvo.style.height = `${faseAtual.alvo * 100}%`;
             const balaoTexto = document.getElementById('balao-alvo-texto');
             if (balaoTexto) {
                 balaoTexto.innerHTML = `Alvo: ${this.formatarFracaoHTML(faseAtual.descricao)}`;
@@ -605,12 +605,37 @@ class TutorialGerenciador {
             const viga = document.getElementById('viga-container');
             if (viga) {
                 viga.classList.add('tutorial-destaque');
-                this.mostrarBalao("O seu objetivo é preencher a fração alvo da coluna central.", "center");
+                this.mostrarBalao("Esta é a <b>coluna central</b>. Seu objetivo é preenchê-la com blocos até atingir a <b>fração alvo</b> indicada.", "center");
             } else {
                 this.proximoPasso();
             }
-        } 
+        }
         else if (this.passoAtual === 3) {
+            const balaoAlvo = document.getElementById('balao-alvo-texto');
+            if (balaoAlvo) {
+                balaoAlvo.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.8)';
+                balaoAlvo.style.outline = '3px solid #ffd700';
+            }
+            this.mostrarBalao(
+                "Este é o indicador de <b>Alvo</b> 🎯! Ele mostra qual fração você precisa construir. " +
+                "Por exemplo, se mostrar <b>1/2</b>, você precisa preencher exatamente metade da coluna. " +
+                "Complete o alvo corretamente e você avançará para a próxima fase!",
+                "center"
+            );
+        }
+        else if (this.passoAtual === 4) {
+            const painelSoma = document.getElementById('viga-soma-algebrica');
+            if (painelSoma) {
+                painelSoma.classList.add('tutorial-destaque');
+            }
+            this.mostrarBalao(
+                "Aqui está a <b>Soma Algébrica</b> 📐! Ela mostra quais blocos você adicionou à coluna e sua soma. " +
+                "Por exemplo: <b>1/2 + 1/2</b> significa que você colocou dois blocos de 1/2. " +
+                "Use isso para acompanhar o progresso enquanto constrói!",
+                "center"
+            );
+        }
+        else if (this.passoAtual === 5) {
             if (this.btn) {
                 this.btn.style.display = 'block';
                 this.btn.textContent = "Pular";
@@ -637,7 +662,7 @@ class TutorialGerenciador {
                 this.proximoPasso(); 
             }
         } 
-        else if (this.passoAtual === 4) {
+        else if (this.passoAtual === 6) {
             if (this.btn) {
                 this.btn.style.display = 'block';
                 this.btn.textContent = "Pular";
@@ -662,7 +687,8 @@ class TutorialGerenciador {
                 this.proximoPasso();
             }
         }
-        else if (this.passoAtual === 5) {
+        
+        else if (this.passoAtual === 7) {
             if (this.mao) this.mao.style.display = 'none';
             if (this.btn) {
                 this.btn.style.display = 'block';
@@ -695,7 +721,7 @@ class TutorialGerenciador {
                 document.getElementById('viga-container')
             );
         }
-        else if (this.passoAtual === 6) {
+        else if (this.passoAtual === 8) {
             if (this.algebraBox) this.algebraBox.style.display = 'none';
             if (this.btn) {
                 this.btn.style.display = 'block';
@@ -715,7 +741,7 @@ class TutorialGerenciador {
                 "down"
             );
         }
-        else if (this.passoAtual === 7) {
+        else if (this.passoAtual === 9) {
             if (this.btn) {
                 this.btn.style.display = 'block';
                 this.btn.textContent = "Pronto para o desafio! Começar Jogo 🚀";
@@ -805,6 +831,12 @@ class TutorialGerenciador {
         document.querySelectorAll('.conquista-brilho-tutorial').forEach(el => {
             el.classList.remove('conquista-brilho-tutorial');
         });
+        // Limpar estilos do balão alvo
+        const balaoAlvo = document.getElementById('balao-alvo-texto');
+        if (balaoAlvo) {
+            balaoAlvo.style.boxShadow = '';
+            balaoAlvo.style.outline = '';
+        }
     }
 
     encerrar() {

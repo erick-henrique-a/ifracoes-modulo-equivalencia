@@ -75,23 +75,23 @@ body {
     cursor: grab;
 }
 
-.linha-alvo {
+/* .linha-alvo {
     position: absolute;
     left: -10px;
-    right: -10px;
-    bottom: 0; /* Começa da base */
-    height: 0; /* Controlado pelo JS */
-    border-top: 3px dashed #764ba2;
+    right: -10px; */
+     /* Começa da base */
+     /* Controlado pelo JS */
+    /* border-top: 3px dashed #764ba2;
     background: rgba(118, 75, 162, 0.1);
     z-index: 1;
     pointer-events: none;
     transition: height 0.3s ease;
-}
+} */
 
 .balao-alvo {
     position: absolute;
-    right: -120px; /* Joga o balão para fora e à direita da viga central */
-    top: -35px;    /* Centraliza verticalmente em relação à linha tracejada */
+    right: -18vw; 
+    top: 25vh;    
     background-color: #764ba2;
     color: white;
     padding: 12px 18px;
@@ -108,13 +108,13 @@ body {
 .balao-alvo::before {
     content: '';
     position: absolute;
-    left: -8px;
+    right: -8px;
     top: 50%;
     transform: translateY(-50%);
     border-top: 9px solid transparent;
     border-bottom: 9px solid transparent;
-    border-right: 9px solid #764ba2;
-    transition: border-right-color 0.3s ease;
+    border-left: 9px solid #764ba2;
+    transition: border-left-color 0.3s ease;
 }
 
 .bloco:hover {
@@ -195,10 +195,12 @@ body {
 }
 
 .engenheiro {
-    text-align: center;
-    font-size: 60px;
-    margin: 20px 0;
-    animation: bounce 2s infinite;
+    height: 250px;
+    width: auto;
+    object-fit: contain;
+    margin: 10px 0;
+    /* animation: bounce 2s infinite; */
+    pointer-events: none;
 }
 
 @keyframes bounce {
@@ -275,6 +277,7 @@ body {
 .botoes-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 12px;
 }
 
@@ -980,6 +983,7 @@ body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaq
 html, body, .container {
     scroll-behavior: smooth; /* Permite o deslize suave da câmara */
 }
+
 .soma-algebrica-container {
     background: rgba(255, 255, 255, 0.9);
     border: 2px solid #e0e0e0;
@@ -1020,27 +1024,27 @@ html, body, .container {
 
 /* --- BOTÃO VALIDAR --- */
 .btn-validar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #51cf66;
     color: white;
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-    width: 100%;
+    box-shadow: 0 4px 8px rgba(81, 207, 102, 0.3);
+    width: 30%;
 }
 
 .btn-validar:hover {
-    background: linear-gradient(135deg, #5568d3 0%, #64398b 100%);
+    background: #40c057;
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 6px 12px rgba(81, 207, 102, 0.4);
 }
 
 .btn-limpar-validacao {
-    background: #ff6b6b;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
     flex: 1;
 }
 
 .btn-limpar-validacao:hover {
-    background: #ff5252;
+    background: #667eea;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
 }
