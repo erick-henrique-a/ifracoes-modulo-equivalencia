@@ -672,7 +672,7 @@ class TutorialGerenciador {
             const conteinerBlocos = document.getElementById('blocos-container');
             if (conteinerBlocos) conteinerBlocos.classList.add('tutorial-destaque');
             document.getElementById('viga-container')?.classList.add('tutorial-destaque');
-
+            
             const proximoBlocoMeio = document.querySelector('.bloco.bloco-meia:not(.usado)');
 
             if (proximoBlocoMeio) {
@@ -687,7 +687,7 @@ class TutorialGerenciador {
                 this.proximoPasso();
             }
         }
-        
+
         else if (this.passoAtual === 7) {
             if (this.mao) this.mao.style.display = 'none';
             if (this.btn) {

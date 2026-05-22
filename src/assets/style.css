@@ -710,9 +710,9 @@ button {
     align-items: center;
     justify-content: center;
 }
-/* Efeito de brilho quando atinge o alvo exato */
-.linha-alvo.alvo-atingido {
-    border-top: 4px solid #51cf66; /* Verde brilhante */
+/* Efeito de brilho quando atinge o alvo exato - DESABILITADO */
+/* .linha-alvo.alvo-atingido {
+    border-top: 4px solid #51cf66; 
     background: rgba(81, 207, 102, 0.3);
     box-shadow: 0 0 15px #51cf66;
     animation: pulse-green 1.5s infinite;
@@ -724,7 +724,7 @@ button {
 }
 .linha-alvo.alvo-atingido .balao-alvo::before {
     border-right-color: #40c057;
-}
+} */
 
 /* Pequeno ajuste para as frações ficarem bem legíveis dentro do balão */
 .balao-alvo .fracao-estilizada {
