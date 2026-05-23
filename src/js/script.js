@@ -752,7 +752,7 @@ class TutorialGerenciador {
             this.mostrarBalao(
                 "Você completou a coluna com sucesso!<br>" +
                 "Veja que, (" +
-                this.jogo.formatarFracaoHTML('1/2') + " + " + this.jogo.formatarFracaoHTML('1/2') + ") = " + this.jogo.formatarFracaoHTML('2/2') + " = 1, isto é, 2 blocos de " + this.jogo.formatarFracaoHTML('1/2') + " correspondem exatamente à fração alvo de 1 inteiro.",
+                this.jogo.formatarFracaoHTML('1/2') + " + " + this.jogo.formatarFracaoHTML('1/2') + ") = " + this.jogo.formatarFracaoHTML('1+1/2') + " = " + this.jogo.formatarFracaoHTML('2/2') + " = " + this.jogo.formatarFracaoHTML('1x2/2x2') + " = " + this.jogo.formatarFracaoHTML('1/1') + " = 1, isto é, 2 blocos de " + this.jogo.formatarFracaoHTML('1/2') + " correspondem exatamente à fração alvo de 1 inteiro.",
                 "top",
                 document.getElementById('viga-container')
             );
@@ -858,6 +858,7 @@ class TutorialGerenciador {
                     this.jogo.formatarFracaoHTML('1/2') + " = " +
                     this.jogo.formatarFracaoHTML('1/4') + " + " +
                     this.jogo.formatarFracaoHTML('1/4') + " = " +
+                    this.jogo.formatarFracaoHTML('1+1/4') + " = " +
                     this.jogo.formatarFracaoHTML('2/4') +
                     ". Elas são <b>frações equivalentes</b> (têm o mesmo valor)!",
                     "center"
