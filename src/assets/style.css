@@ -815,7 +815,7 @@ button {
     background: rgba(0, 0, 0, 0.8);
     z-index: 9997;
     display: none;
-    pointer-events: none;   /* ⬅️ Permite interagir com o que está atrás */
+    pointer-events: auto; /* Bloqueia cliques no fundo */
 }
 
 .tutorial-destaque {
@@ -925,7 +925,6 @@ body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaq
 /* Container da Álgebra ao lado da viga */
 .tutorial-algebra {
     position: absolute;
-    pointer-events: auto;
     left: calc(100% + 20px);
     top: 50%;
     transform: translateY(-50%);

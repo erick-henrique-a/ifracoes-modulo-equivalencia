@@ -285,111 +285,81 @@ class JogoFracoes {
     }
 
     configurarDragAndDrop() {
-        const vigaContainer = document.getElementById('viga-container');
-        if (!vigaContainer) return;
+    const vigaContainer = document.getElementById('viga-container');
+    if (!vigaContainer) return;
 
-        vigaContainer.addEventListener('dragover', (e) => {
-            e.preventDefault();
-        });
+    vigaContainer.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
 
-        vigaContainer.addEventListener('drop', (e) => {
-            e.preventDefault();
+    vigaContainer.addEventListener('drop', (e) => {
+        e.preventDefault();
 
-            // Extrair dados SEMPRE (antes de qualquer verificação)
-            const index = parseInt(e.dataTransfer.getData('indexEstoque'));
-            const chave = e.dataTransfer.getData('chaveBloco');
-            const caracteristicas = this.tiposBlocos[chave];
-            if (!caracteristicas) return;
+        // Extrair dados SEMPRE (antes de qualquer verificação)
+        const index = parseInt(e.dataTransfer.getData('indexEstoque'));
+        const chave = e.dataTransfer.getData('chaveBloco');
+        const caracteristicas = this.tiposBlocos[chave];
+        if (!caracteristicas) return;
 
-            const totalVigaAtual = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
+        const totalVigaAtual = this.vigaAtual.reduce((sum, b) => sum + b.fracao, 0);
 
-            // ---------- TRATAMENTO DO TUTORIAL ----------
-            if (this.tutorial && this.tutorial.ativo) {
-                const tut = this.tutorial;
+        // ---------- TRATAMENTO DO TUTORIAL ----------
+        if (this.tutorial && this.tutorial.ativo) {
+            const tut = this.tutorial;
 
-                // Tutorial Fase 1: passo 5 ou 6 (arrastar 1/2)
-                if (tut.tutorialAtivo === 'fase1' && (tut.passoAtual === 5 || tut.passoAtual === 6) && chave === '1/2') {
+            // Tutorial Fase 1: passo 5 ou 6 (arrastar 1/2)
+            if (tut.tutorialAtivo === 'fase1' && (tut.passoAtual === 5 || tut.passoAtual === 6) && chave === '1/2') {
+                this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
+                this.renderizarBlocos();
+                tut.proximoPasso();
+                return;
+            }
+
+            // Tutorial Fase 5: passo 4 (arrastar 1/2) ou passo 5 (arrastar 1/4)
+            if (tut.tutorialAtivo === 'fase5' && (tut.passoAtualFase5 === 4 || tut.passoAtualFase5 === 5)) {
+                const esperado4 = (tut.passoAtualFase5 === 4 && chave === '1/2');
+                const esperado5 = (tut.passoAtualFase5 === 5 && chave === '1/4');
+
+                if (esperado4 || esperado5) {
                     this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
                     this.renderizarBlocos();
                     tut.proximoPasso();
                     return;
-                }
-
-                // Tutorial Fase 5: passo 4 (arrastar 1/2) ou passo 5 (arrastar 1/4)
-                if (tut.tutorialAtivo === 'fase5' && (tut.passoAtualFase5 === 4 || tut.passoAtualFase5 === 5)) {
-                    const esperado4 = (tut.passoAtualFase5 === 4 && chave === '1/2');
-                    const esperado5 = (tut.passoAtualFase5 === 5 && chave === '1/4');
-
-                    if (esperado4 || esperado5) {
-                        this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
-                        this.renderizarBlocos();
-                        tut.proximoPasso();
-                        return;
-                    } else {
-                        const status = document.getElementById('status-mensagem');
-                        if (status) {
-                            status.textContent = '🔍 Tente arrastar o bloco indicado pelo tutorial!';
-                            status.className = 'status-mensagem quase';
-                        }
-                        return;
+                } else {
+                    const status = document.getElementById('status-mensagem');
+                    if (status) {
+                        status.textContent = '🔍 Tente arrastar o bloco indicado pelo tutorial!';
+                        status.className = 'status-mensagem quase';
                     }
+                    return;
                 }
-
-                // Tutorial Fase 5: passo 9 (arrastar 1/4 primeiro, depois 1/2 em ordem inversa)
-                if (tut.tutorialAtivo === 'fase5' && tut.passoAtualFase5 === 9) {
-                    // Passo 9: deve arrastar 1/4 primeiro (se viga vazia) ou 1/2 segundo (se 1/4 já está)
-                    const vigaVazia = this.vigaAtual.length === 0;
-                    const primeiroE1Quarto = vigaVazia && chave === '1/4';
-                    const segundoE1Meio = !vigaVazia && this.vigaAtual.length === 1 &&
-                        this.vigaAtual[0].label.trim() === '1/4' && chave === '1/2';
-                    if (primeiroE1Quarto || segundoE1Meio) {
-                        this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
-                        this.renderizarBlocos();
-
-                        // Se a sequência estiver completa (1/4 + 1/2), avançar para próximo passo
-                        if (segundoE1Meio && this.vigaAtual.length === 2) {
-                            setTimeout(() => tut.proximoPassoFase5(), 500);
-                        }
-                        return;
-                    } else {
-                        const status = document.getElementById('status-mensagem');
-                        if (status) {
-                            if (vigaVazia) {
-                                status.textContent = '🔍 Comece arrastando o bloco roxo de 1/4!';
-                            } else {
-                                status.textContent = '🔍 Agora arraste o bloco azul de 1/2 por cima!';
-                            }
-                            status.className = 'status-mensagem quase';
-                        }
-                        return;
-                    }
-                }
-
-                // Qualquer outro passo do tutorial bloqueia todos os drops
-                return;
             }
 
-            // ---------- COMPORTAMENTO NORMAL (FORA DO TUTORIAL) ----------
-            if (totalVigaAtual + caracteristicas.fracao > 1.001) {
-                vigaContainer.classList.add('sobrecarga', 'tremer-viga');
-                const status = document.getElementById('status-mensagem');
-                if (status) {
-                    status.textContent = '⚠️ Você colocou demais! O bloco não cabe na coluna de 1 inteiro.';
-                    status.className = 'status-mensagem quase';
-                }
-                setTimeout(() => {
-                    vigaContainer.classList.remove('tremer-viga');
-                    if (totalVigaAtual <= 1.001) {
-                        vigaContainer.classList.remove('sobrecarga');
-                    }
-                }, 500);
-                return;
-            }
+            // Qualquer outro passo do tutorial bloqueia todos os drops
+            return;
+        }
 
-            this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
-            this.renderizarBlocos();
-        });
-    }
+        // ---------- COMPORTAMENTO NORMAL (FORA DO TUTORIAL) ----------
+        if (totalVigaAtual + caracteristicas.fracao > 1.001) {
+            vigaContainer.classList.add('sobrecarga', 'tremer-viga');
+            const status = document.getElementById('status-mensagem');
+            if (status) {
+                status.textContent = '⚠️ Você colocou demais! O bloco não cabe na coluna de 1 inteiro.';
+                status.className = 'status-mensagem quase';
+            }
+            setTimeout(() => {
+                vigaContainer.classList.remove('tremer-viga');
+                if (totalVigaAtual <= 1.001) {
+                    vigaContainer.classList.remove('sobrecarga');
+                }
+            }, 500);
+            return;
+        }
+
+        this.adicionarBlocoAViga(caracteristicas.fracao, caracteristicas.label, caracteristicas.classe, index);
+        this.renderizarBlocos();
+    });
+}
 
     adicionarBlocoAViga(fracao, label, classe, indexOriginal) {
         this.vigaAtual.push({
@@ -405,22 +375,13 @@ class JogoFracoes {
 
     removerBlocoViga(id) {
         if (this.tutorial && this.tutorial.ativo) {
-            // Permitir remoção apenas no passo 8 da fase 5 (experimento)
-            if (!(this.tutorial.tutorialAtivo === 'fase5' && this.tutorial.passoAtualFase5 === 8)) {
-                //console.log("Não é permitido remover blocos durante o tutorial!");
-                return; // Sai da função imediatamente e não remove nada
-            }
+            //console.log("Não é permitido remover blocos durante o tutorial!");
+            return; // Sai da função imediatamente e não remove nada
         }
         this.vigaAtual = this.vigaAtual.filter(b => b.id !== id);
         this.atualizarUI();
         this.renderizarBlocos();
         this.verificarVitoria();
-
-        // Se todos os blocos foram removidos no passo 8 da fase 5, avançar para o passo 9
-        if (this.tutorial && this.tutorial.ativo && this.tutorial.tutorialAtivo === 'fase5' &&
-            this.tutorial.passoAtualFase5 === 8 && this.vigaAtual.length === 0) {
-            setTimeout(() => this.tutorial.proximoPassoFase5(), 300);
-        }
     }
 
     atualizarUI() {
@@ -859,11 +820,6 @@ class TutorialGerenciador {
             this.btn.textContent = 'Avançar';
         }
 
-        // Reposicionar o balão para o canto superior direito
-        setTimeout(() => {
-            this.reposicionarBalao();
-        }, 50);
-
         switch (this.passoAtualFase5) {
             case 1:
                 this.mostrarBalao(
@@ -934,7 +890,7 @@ class TutorialGerenciador {
 
             case 5:
                 // Destacar bloco roxo (1/4) e instruir arraste
-                const blocoRoxo = document.querySelector('.bloco.bloco-um-quarto:not(.usado)');
+                const blocoRoxo = document.querySelector('.bloco.bloco-quarto:not(.usado)');
                 if (blocoRoxo) {
                     blocoRoxo.classList.add('bloco-piscar', 'tutorial-destaque');
                     this.mostrarBalao(
@@ -989,50 +945,28 @@ class TutorialGerenciador {
                 break;
 
             case 8:
-                // Pedir para remover os blocos
+                // Pedir para inverter a ordem dos blocos
                 const viga = document.getElementById('viga-container');
                 if (viga) viga.classList.add('tutorial-destaque');
 
+                // Destacar novamente os blocos (mesmo que já estejam usados, o destaque visual ajuda)
+                const blocoRoxo2 = document.querySelector('.bloco.bloco-quarto');
+                const blocoAzul2 = document.querySelector('.bloco.bloco-meia');
+                if (blocoRoxo2) blocoRoxo2.classList.add('tutorial-destaque', 'bloco-piscar');
+                if (blocoAzul2) blocoAzul2.classList.add('tutorial-destaque');
+
                 this.mostrarBalao(
-                    "Retire os blocos da coluna clicando neles. Vamos refazer a construção, mas desta vez em ordem inversa!",
-                    "top",
-                    viga
+                    "Retire os blocos e, desta vez, coloque o bloco roxo de " +
+                    this.jogo.formatarFracaoHTML('1/4') +
+                    " primeiro, lá embaixo, e o azul de " +
+                    this.jogo.formatarFracaoHTML('1/2') +
+                    " por cima.",
+                    "center"
                 );
                 if (this.btn) this.btn.textContent = "Pular";
-
-                // Se a viga já está vazia, avançar automaticamente
-                if (this.jogo.vigaAtual.length === 0) {
-                    setTimeout(() => this.proximoPassoFase5(), 500);
-                }
                 break;
 
             case 9:
-                // Seleciona todos os blocos disponíveis de cada tipo
-                const blocosQuarto = document.querySelectorAll('.bloco.bloco-um-quarto:not(.usado)');
-                const blocosMeia = document.querySelectorAll('.bloco.bloco-meia:not(.usado)');
-                const blocoRoxo2 = blocosQuarto.length > 0 ? blocosQuarto[0] : null;
-                const blocoAzul2 = blocosMeia.length > 0 ? blocosMeia[0] : null;
-
-                if (blocoRoxo2) {
-                    blocoRoxo2.classList.add('bloco-piscar', 'tutorial-destaque');
-                }
-                if (blocoAzul2) {
-                    blocoAzul2.classList.add('tutorial-destaque');
-                }
-
-                this.mostrarBalao(
-                    "Agora arraste primeiro o bloco roxo de " +
-                    this.jogo.formatarFracaoHTML('1/4') +
-                    " (embaixo), e depois o azul de " +
-                    this.jogo.formatarFracaoHTML('1/2') +
-                    " (por cima).",
-                    "top",
-                    document.getElementById('viga-container')
-                );
-                if (this.btn) this.btn.textContent = "Pular";
-                break;
-
-            case 10:
                 // Mostrar a igualdade comutativa
                 if (this.algebraBox) {
                     this.algebraBox.style.display = 'block';
@@ -1055,7 +989,7 @@ class TutorialGerenciador {
                 if (this.btn) this.btn.textContent = "Entendi!";
                 break;
 
-            case 11:
+            case 10:
                 // Destacar botão Validar e encerrar
                 const btnValidar = document.getElementById('btn-validar');
                 if (btnValidar) {
@@ -1063,8 +997,7 @@ class TutorialGerenciador {
                 }
                 this.mostrarBalao(
                     "Clique em <b>Validar</b> para entregar mais essa obra perfeita!",
-                    "top",
-                    btnValidar
+                    "center"
                 );
                 if (this.btn) {
                     this.btn.textContent = "Finalizar tutorial";
@@ -1086,11 +1019,8 @@ class TutorialGerenciador {
         this.balao.style.display = 'flex';
         this.texto.innerHTML = mensagem;
 
-        // A partir do passo 2 da fase 1, ou a partir do passo 1 da fase 5, coloca no canto superior direito do container
-        const isFase1Passo2 = this.tutorialAtivo === 'fase1' && this.passoAtual >= 2;
-        const isFase5 = this.tutorialAtivo === 'fase5';
-
-        if (isFase1Passo2 || isFase5) {
+        // A partir do passo 2, coloca no canto superior direito do container
+        if (this.passoAtual >= 2) {
             const container = document.querySelector('.container');
             if (container) {
                 const rect = container.getBoundingClientRect();
@@ -1106,30 +1036,12 @@ class TutorialGerenciador {
                 this.balao.style.transform = "none";
             }
         } else {
-            // Passo 1 da fase 1: centralizado na tela
+            // Passo 1: centralizado na tela
             if (posicao === "center" || !elementoAlvo) {
                 this.balao.style.top = "50%";
                 this.balao.style.left = "50%";
                 this.balao.style.transform = "translate(-50%, -50%)";
             }
-        }
-    }
-
-    reposicionarBalao() {
-        if (!this.balao) return;
-        const container = document.querySelector('.container');
-        if (container) {
-            const rect = container.getBoundingClientRect();
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            // Posiciona no canto superior direito do container
-            const top = rect.top + scrollTop + 20;
-            const left = rect.right + scrollLeft - 620; // 600px (max-width) + 20px de margem
-
-            this.balao.style.top = `${top}px`;
-            this.balao.style.left = `${left}px`;
-            this.balao.style.transform = "none";
         }
     }
 
