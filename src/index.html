@@ -26,12 +26,9 @@
 
         <!-- PAINEL CENTRAL -->
         <div class="center-panel">
+
+            <div id="viga-soma-algebrica" class="soma-algebrica-container"></div>
             
-            <div class="painel-desbloqueios">
-                <div class="desbloqueios-titulo">🔓 Painel de Conquistas</div>
-                <div class="desbloqueios-grid" id="desbloqueios-grid">
-                </div>
-            </div>
             <div class="viga-container" id="viga-container">
                 <div id="linha-alvo" class="linha-alvo">
                     <div class="balao-alvo" id="balao-alvo-texto"></div>
@@ -42,8 +39,7 @@
             <div id="tutorial-algebra" class="tutorial-algebra"></div>
             <div class="status-mensagem" id="status-mensagem"></div>
             <div class="botoes-container">
-                <button class="btn-limpar" onclick="game.limpar()">🗑️ Limpar</button>
-                <button class="btn-proxima" id="btn-proxima" onclick="game.proximaFase()">✓ Próxima Fase</button>
+                <button class="btn-validar" id="btn-validar" onclick="game.abrirModalValidacao()">✓ Validar</button>
             </div>
             
         </div>
@@ -57,9 +53,9 @@
                 <div class="fase-progresso-bar">
                     <div class="fase-progresso-fill" id="fase-progresso-fill" style="width: 0%;"></div>
                 </div>
-            
+                <button class="btn-conquistas" id="btn-conquistas" onclick="game.abrirModalConquistas()">🔓 Conquistas</button>
             </div>  
-            <div class="engenheiro">👷‍♂️</div>
+            <img src="/assets/assistente.png" alt="Assistente" class="engenheiro">
             <div class="marcadores" id="marcadores">
                 <!-- Marcadores serão inseridos aqui -->
             </div>          
@@ -69,13 +65,45 @@
     </div>
 
 
+
     <script src="/js/script.js"></script>
+
+    <!-- MODAL DE CONQUISTAS -->
+    <div id="modal-conquistas" class="modal-conquistas">
+        <div class="modal-conquistas-content">
+            <button class="modal-fechar" onclick="game.fecharModalConquistas()">&times;</button>
+            <div class="desbloqueios-titulo">🔓 Painel de Conquistas</div>
+            <div class="desbloqueios-grid" id="desbloqueios-grid">
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE VALIDAÇÃO -->
+    <div id="modal-validacao" class="modal-validacao">
+        <div class="modal-validacao-content">
+            <button class="modal-fechar" onclick="game.fecharModalValidacao()">&times;</button>
+            <div class="validacao-titulo">Verificando sua resposta...</div>
+            
+            <div class="validacao-soma">
+                <div class="validacao-expressao" id="validacao-expressao"></div>
+            </div>
+            
+            <div class="validacao-resultado" id="validacao-resultado"></div>
+            
+            <div class="validacao-botoes">
+                <button class="btn-proxima" id="btn-proxima-validacao" onclick="game.proximaFase(); game.fecharModalValidacao();">✓ Próxima Fase</button>
+                <button class="btn-limpar-validacao" id="btn-limpar-validacao" onclick="game.limpar(); game.fecharModalValidacao();">Tente Novamente!</button>
+            </div>
+        </div>
+    </div>
 
     <div id="tutorial-overlay" class="tutorial-overlay"></div>
     <div id="tutorial-balao" class="tutorial-balao">
         <p id="tutorial-texto"></p>
         <button id="tutorial-btn" onclick="game.tutorial.proximoPasso()">Avançar</button>
     </div>
-    <div id="tutorial-mao" class="tutorial-mao">🫳</div>
+    <div id="tutorial-mao" class="tutorial-mao"> <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-hand-index" viewBox="0 0 16 16">
+  <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 1 0 1 0V6.435l.106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 0 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.035a.5.5 0 0 1-.416-.223l-1.433-2.15a1.5 1.5 0 0 1-.243-.666l-.345-3.105a.5.5 0 0 1 .399-.546L5 8.11V9a.5.5 0 0 0 1 0V1.75A.75.75 0 0 1 6.75 1M8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v5.34l-1.2.24a1.5 1.5 0 0 0-1.196 1.636l.345 3.106a2.5 2.5 0 0 0 .405 1.11l1.433 2.15A1.5 1.5 0 0 0 6.035 16h6.385a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5 5 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.6 2.6 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046zm2.094 2.025"/>
+</svg></div>
 </body>
 </html>
