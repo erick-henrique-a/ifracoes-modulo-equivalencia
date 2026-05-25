@@ -844,8 +844,8 @@ class TutorialGerenciador {
         }
         else if (this.passoAtual === 3) {
             this.mostrarBalao("Mas nem sempre temos blocos inteiros. Às vezes, usamos pedaços menores, como metades (" + 
-                                this.jogo.formatarFracaoHTML('1/2') + ") ou terços (" + 
-                                this.jogo.formatarFracaoHTML('1/3') + ").", 
+                                this.jogo.formatarFracaoHTML('1/2') + ") ou quartos (" + 
+                                this.jogo.formatarFracaoHTML('1/4') + ")...", 
                             "center");
         }
         else if (this.passoAtual === 4) {
@@ -982,8 +982,8 @@ class TutorialGerenciador {
 
             this.mostrarBalao(
                 "Você completou a coluna com sucesso!<br><br>" +
-                "\u2714Propriedade 1: " +
-                "Quando somamos frações com o mesmo denominador (o número de baixo), nós mantemos o denominador e somamos apenas os numeradores (números de cima)<br>" +
+                "\u2714 Propriedade 1: " +
+                "Quando somamos frações com o mesmo denominador, é simples: conservamos o denominador (o número de baixo) e somamos apenas os numeradores (os números de cima):<br>" +
                 this.jogo.formatarFracaoHTML('1/2') + " + " + this.jogo.formatarFracaoHTML('1/2') + " = " + this.jogo.formatarFracaoHTML('1+1/2') + " = " + this.jogo.formatarFracaoHTML('2/2'),
                 "top",
                 document.getElementById('viga-container')
@@ -1004,8 +1004,10 @@ class TutorialGerenciador {
             document.getElementById('viga-container')?.classList.add('tutorial-destaque');
 
                     this.mostrarBalao(
-                        "\u2714Propriedade 2: " +
+                        "\u2714 Propriedade 2: " +
                             "Além disso, quando aplicamos a mesma operação matemática em ambos (numerador e denominador), encontramos uma fração equivalente, que representa exatamente o mesmo tamanho de bloco:<br>" +
+                            this.jogo.formatarFracaoHTML('2/2') +
+                            " = " +
                             this.jogo.formatarFracaoHTML('2\u00F72/2\u00F72') +
                             " = " +
                             this.jogo.formatarFracaoHTML('1/1') +
