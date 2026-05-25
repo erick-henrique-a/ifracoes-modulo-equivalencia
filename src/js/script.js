@@ -679,24 +679,41 @@ class JogoFracoes {
     }
 
     formatarFracao(valor) {
-        // Converter decimal para fração aproximada
+        // Converter decimal para fração aproximada 
+        // Adicionar todos os alvos e opções de frações possíveis do jogo aquiiiii
         const fracoes = [
-            { decimal: 1 / 16, display: '1/16' },
-            { decimal: 1 / 12, display: '1/12' },
-            { decimal: 1 / 8, display: '1/8' },
-            { decimal: 1 / 6, display: '1/6' },
-            { decimal: 1 / 4, display: '1/4' },
-            { decimal: 1 / 3, display: '1/3' },
-            { decimal: 3 / 8, display: '3/8' },
+            //Nível 1
+            { decimal: 1, display: '1' },
             { decimal: 1 / 2, display: '1/2' },
-            { decimal: 5 / 8, display: '5/8' },
-            { decimal: 2 / 3, display: '2/3' },
+            { decimal: 1 / 4, display: '1/4' },
             { decimal: 3 / 4, display: '3/4' },
-            { decimal: 5 / 6, display: '5/6' },
+
+            //Nível 2
+            { decimal: 1 / 8, display: '1/8' },
+            { decimal: 3 / 8, display: '3/8' },
+            { decimal: 5 / 8, display: '5/8' },
             { decimal: 7 / 8, display: '7/8' },
-            { decimal: 11 / 12, display: '11/12' },
-            { decimal: 13 / 16, display: '13/16' },
-            { decimal: 1, display: '4/4' }
+
+            //Nível 3
+            { decimal: 1 / 3, display: '1/3' },
+            { decimal: 1 / 6, display: '1/6' },
+            { decimal: 1 / 9, display: '1/9' },
+
+            //Nível 4
+            { decimal: 1 / 5, display: '1/5' },
+            { decimal: 2 / 5, display: '2/5' },
+            { decimal: 3 / 5, display: '3/5' },
+            { decimal: 4 / 5, display: '4/5' },
+            { decimal: 1 / 7, display: '1/7' },
+            { decimal: 2 / 7, display: '2/7' },
+            { decimal: 3 / 7, display: '3/7' },
+            { decimal: 4 / 7, display: '4/7' },
+            { decimal: 5 / 7, display: '5/7' },
+            { decimal: 6 / 7, display: '6/7' },            
+            { decimal: 1 / 10, display: '1/10' },            
+            { decimal: 3 / 10, display: '3/10' },
+            { decimal: 7 / 10, display: '7/10' },
+            { decimal: 9 / 10, display: '9/10' },            
         ];
 
         for (let f of fracoes) {
@@ -897,10 +914,12 @@ class TutorialGerenciador {
             const painelSoma = document.getElementById('viga-soma-algebrica');
             if (painelSoma) painelSoma.classList.remove('tutorial-destaque');
             const conteinerBlocos = document.getElementById('blocos-container');
-            if (conteinerBlocos) conteinerBlocos.classList.add('tutorial-destaque');
+            
             document.getElementById('viga-container')?.classList.add('tutorial-destaque');
 
             const proximoBlocoMeio = document.querySelector('.bloco.bloco-meia:not(.usado)');
+            proximoBlocoMeio.classList.add('tutorial-destaque');
+
 
             if (proximoBlocoMeio) {
                 proximoBlocoMeio.classList.add('bloco-piscar');
@@ -920,6 +939,7 @@ class TutorialGerenciador {
                 this.btn.style.display = 'block';
                 this.btn.textContent = "Avançar"; 
             }
+            if (this.mao) this.mao.style.display = 'none';
             const painelSoma = document.getElementById('viga-soma-algebrica');
             if (painelSoma) {
                 painelSoma.classList.add('tutorial-destaque');
@@ -1013,6 +1033,7 @@ class TutorialGerenciador {
                 btnValidarJogo.style.zIndex = '10001';
                 btnValidarJogo.classList.add('tutorial-destaque');
                 
+                document.getElementById('viga-container')?.classList.add('tutorial-destaque');
                 this.mostrarBalao(
                     "Excelente! A coluna está completa. Agora clique no botão <b>Validar</b> para testar a sua estrutura!", 
                     "right", 
