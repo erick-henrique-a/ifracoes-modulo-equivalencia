@@ -718,6 +718,34 @@ class JogoFracoes {
         </span>
     `;
     }
+    // -------------------FUNÇÃO ÚNICA E UNIVERSAL DE TESTE DE TUTORIAIS------------------------------
+    testarTutorial(fase) {
+        // 1. Define os indicadores da fase baseado no parâmetro recebido
+        this.faseAtual = fase;
+        this.fasesCompletadas = fase - 1;
+        
+        // 2. Limpa a viga atual para começar o cenário do zero
+        this.vigaAtual = [];
+        
+        // 3. Fecha modais pendentes para não sobrepor telas
+        this.fecharModalConquistas();
+        if (typeof this.fecharModalValidacao === 'function') {
+            this.fecharModalValidacao();
+        }
+
+        // 4. Recarrega o estoque de blocos e atualiza a interface para a fase escolhida
+        this.renderizarBlocos();
+        this.atualizarUI();
+
+        // 5. Reinicia e dispara o gerenciador de tutorial com a fase correta
+        if (this.tutorial) {
+            this.tutorial.encerrar(); // Para o tutorial anterior se houver algum rodando
+            this.tutorial.iniciar(fase); // Inicia o novo tutorial desejado
+            console.log(`Modo teste: Iniciando tutorial da fase ${fase}`);
+        } else {
+            console.error("Gerenciador de tutorial não foi encontrado na instância do jogo.");
+        }
+    }
 }
 
 
@@ -738,6 +766,14 @@ class TutorialGerenciador {
     }
 
     iniciar() {
+        if (this.btn) this.btn.style.display = 'block';
+        const engenheiro = document.querySelector('.engenheiro');
+        if (engenheiro && engenheiro.parentElement) {
+            engenheiro.parentElement.classList.add('mestre-tutorial-ativa');
+        }
+        const btnPular = document.getElementById('tutorial-pular-btn');
+        if (btnPular) btnPular.style.display = 'block';
+
         if (this.jogo.faseAtual === 1) {
             this.tutorialAtivo = 'fase1';
             this.passoAtual = 0;
@@ -766,13 +802,7 @@ class TutorialGerenciador {
 
     proximoPassoFase1() {
         this.passoAtual++;
-        this.limparDestaques();
-
-        if (this.btn) this.btn.style.display = 'block';
-        const engenheiro = document.querySelector('.engenheiro');
-        if (engenheiro && engenheiro.parentElement) {
-            engenheiro.parentElement.classList.add('mestre-tutorial-ativa');
-        }
+        this.limparDestaques();               
 
         if (this.passoAtual === 1) {
             this.mostrarBalao("Olá! Eu sou a Mestre de Obras. Que bom que você chegou, nosso(a) Engenheiro(a) Chefe!", "center");
@@ -1108,11 +1138,6 @@ class TutorialGerenciador {
         if (this.mao) this.mao.style.display = 'none';
         if (this.algebraBox) this.algebraBox.style.display = 'none';
 
-        const engenheiro = document.querySelector('.engenheiro');
-        if (engenheiro && engenheiro.parentElement) {
-            engenheiro.parentElement.classList.add('mestre-tutorial-ativa');
-        }
-
         // O botão do tutorial sempre visível para prosseguir
         if (this.btn) {
             this.btn.style.display = 'block';
@@ -1441,6 +1466,9 @@ class TutorialGerenciador {
         if (this.balao) this.balao.style.display = 'none';
         if (this.mao) this.mao.style.display = 'none';
         if (this.algebraBox) this.algebraBox.style.display = 'none';
+
+        const btnPular = document.getElementById('tutorial-pular-btn');
+        if (btnPular) btnPular.style.display = 'none';
 
         const engenheiroContainer = document.querySelector('.right-panel');
         if (engenheiroContainer) {

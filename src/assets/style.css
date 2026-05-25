@@ -886,6 +886,33 @@ body:has(.tutorial-overlay[style*="display: block"])
     border: none;
     cursor: pointer;
     z-index: 10003;
+    display: flex;
+    gap: 5px;
+    margin-top: 15px;
+    justify-content: flex-end; /* Alinha os botões à direita */
+}
+/* Estilização do novo botão de Pular */
+#tutorial-pular-btn {
+    background-color: #e2e8f0 !important; 
+    color: #4a5568;
+    padding: 8px 18px;
+    border-radius: 6px;
+    align-self: flex-end;
+    text-transform: none;
+    font-size: 11px;
+    border: none;
+    pointer-events: auto !important; /* Abre a permissão de clique do mouse 🚀 */
+    cursor: pointer !important;
+    z-index: 10000;
+    display: flex;
+    margin-top: 15px;
+    justify-content: flex-end; /* Alinha os botões à direita */
+    transition: all 0.2s ease;
+}
+
+#tutorial-pular-btn:hover {
+    background-color: #cbd5e1;
+    color: #2d3748;
 }
 
 #tutorial-btn:hover {
@@ -1215,4 +1242,27 @@ html, body, .container {
         transform: scale(1.05);
         box-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 165, 0, 0.4);
     }
+}
+
+/* Botões de teste geral */
+.btn-teste-geral {
+    background-color: #ff3366 !important;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    align-self: flex-start;
+    text-transform: none;
+    font-size: 11px;
+    border: none;
+    pointer-events: auto !important; /* Abre a permissão de clique do mouse 🚀 */
+    cursor: pointer !important;
+    z-index: 10000;    
+    margin-top: 15px;    
+    transition: background 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 6px rgba(255, 51, 102, 0.2);
+}
+
+.btn-teste-geral:hover {
+    background-color: #e02454;
+    transform: translateY(-1px);
 }
