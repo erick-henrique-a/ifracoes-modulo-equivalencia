@@ -461,7 +461,7 @@ button {
 .modal-conquistas {
     display: none;
     position: fixed;
-    z-index: 9998;
+    z-index: 10005;
     left: 0;
     top: 0;
     width: 100%;
@@ -815,7 +815,7 @@ button {
     background: rgba(0, 0, 0, 0.8);
     z-index: 9997;
     display: none;
-    pointer-events: none;   /* ⬅️ Permite interagir com o que está atrás */
+    pointer-events: auto; /* Bloqueia cliques no fundo */
 }
 
 .tutorial-destaque {
@@ -824,15 +824,26 @@ button {
     pointer-events: auto !important; /* Libera a viga para aceitar o mouse e o drag */
     background-color: #ffffff !important; /* Faz a coluna "acender" visualmente */
     box-shadow: 0 0 30px rgba(255, 255, 255, 1) !important;
+    cursor: pointer !important;  
 }
 
-/* Garante que o resto dos elementos fiquem travados enquanto o tutorial estiver ativo */
-body:has(.tutorial-overlay[style*="display: block"]) button:not(#tutorial-btn),
-body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaque) {
+/* Bloqueia apenas elementos fora do tutorial */
+body:has(.tutorial-overlay[style*="display: block"]) 
+.left-panel button,
+body:has(.tutorial-overlay[style*="display: block"]) 
+.right-panel button,
+body:has(.tutorial-overlay[style*="display: block"]) 
+.bloco:not(.tutorial-destaque) {
     pointer-events: none !important;
     cursor: not-allowed !important;
 }
-
+/* Permite clicar normalmente nos botões do modal */
+.modal-validacao button,
+.modal-conquistas button {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    color: white;
+}
 .tutorial-balao {
     position: fixed;
     z-index: 10001;
@@ -851,6 +862,7 @@ body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaq
     max-height: 60vh;
     overflow-y: auto;
     font-size: 14px;
+    /*justify-content: space-evenly; Centraliza o conteúdo verticalmente */
 }
 
 .tutorial-balao p {
@@ -925,7 +937,6 @@ body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaq
 /* Container da Álgebra ao lado da viga */
 .tutorial-algebra {
     position: absolute;
-    pointer-events: auto;
     left: calc(100% + 20px);
     top: 50%;
     transform: translateY(-50%);
@@ -1155,4 +1166,50 @@ html, body, .container {
 
 .validacao-botoes .btn-limpar-validacao.show {
     display: block !important;
+}
+/* Animação de pulsação suave para a Mestre de Obras no Tutorial */
+@keyframes mestre-pulsar {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7)); }
+    100% { transform: scale(1); }
+}
+
+/* Força o container e a imagem a ficarem visíveis e a pulsar acima do overlay */
+#assistente-construcao.mestre-tutorial-ativa {
+    display: block !important;
+    position: relative !important;
+    z-index: 10002 !important; /* Acima do overlay (10000) */
+}
+
+#assistente-construcao.mestre-tutorial-ativa .engenheiro {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    animation: mestre-pulsar 2.5s infinite ease-in-out !important;
+}
+/* Substitua a regra existente por: */
+.right-panel.mestre-tutorial-ativa .engenheiro {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    animation: mestre-pulsar 2.5s infinite ease-in-out !important;
+    position: relative !important;
+    z-index: 10002 !important;
+}
+/* Animação de pulsação de brilho para o botão de conquistas */
+.conquistas-brilhar-alerta {
+    animation: brilhoAlertaBotao 1.5s infinite alternate !important;
+    border: 2px solid #ffd700 !important; /* Borda dourada */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8) !important;
+}
+
+@keyframes brilhoAlertaBotao {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    100% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 165, 0, 0.4);
+    }
 }
