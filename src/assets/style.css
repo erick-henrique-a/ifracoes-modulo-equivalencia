@@ -821,10 +821,9 @@ button {
 .tutorial-destaque {
     position: relative !important;
     z-index: 9999 !important;
-    pointer-events: auto !important; /* Libera a viga para aceitar o mouse e o drag */
-    background-color: #ffffff !important; /* Faz a coluna "acender" visualmente */
+    pointer-events: auto !important;
     box-shadow: 0 0 30px rgba(255, 255, 255, 1) !important;
-    cursor: pointer !important;  
+    cursor: pointer !important;
 }
 
 /* Bloqueia apenas elementos fora do tutorial */
@@ -836,6 +835,10 @@ body:has(.tutorial-overlay[style*="display: block"])
 .bloco:not(.tutorial-destaque) {
     pointer-events: none !important;
     cursor: not-allowed !important;
+}
+.viga-container.tutorial-destaque,
+.bloco.tutorial-destaque {
+    background-color: #ffffff !important;
 }
 /* Permite clicar normalmente nos botões do modal */
 .modal-validacao button,
