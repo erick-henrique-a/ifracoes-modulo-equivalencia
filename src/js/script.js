@@ -240,20 +240,6 @@ class JogoFracoes {
             this.renderizarBlocos();
             this.atualizarUI();
 
-            if (this.tutorial && this.tutorial.ativo && this.tutorial.passoAtual === 13) {
-                const btnProximaValidacao = document.getElementById('btn-proxima-validacao');
-                if (btnProximaValidacao) btnProximaValidacao.classList.remove('tutorial-destaque');
-                
-                // Força o tutorial a ir para o passo 14 diretamente
-                this.tutorial.proximoPasso();
-                return; 
-            }
-
-            // Dispara a cadeia de animações de forma assíncrona se for um desbloqueio inédito
-            if (novaConquistaDesbloqueada) {
-                this.dispararAnimacaoConquistaAutomatica(chaveConquista);
-            }
-
             if (this.faseAtual === 5) {
                 // Pequeno atraso para garantir que o DOM já foi atualizado
                 setTimeout(() => this.tutorial.iniciar(), 100);
@@ -905,8 +891,8 @@ class TutorialGerenciador {
             if (blocoMeio) {
                 blocoMeio.classList.add('bloco-piscar');
                 blocoMeio.classList.add('tutorial-destaque');
-                this.mostrarBalao("Para começar, clique e arraste este bloco de " +
-                    this.jogo.formatarFracaoHTML('1/2') + " (uma metade) para dentro da coluna central.",
+                this.mostrarBalao("Para começar, vá ao painel de blocos e arraste este bloco de " +
+                    this.jogo.formatarFracaoHTML('1/2') + " (uma metade)    para dentro da coluna central.",
                     "right",
                     blocoMeio);
 
@@ -1126,24 +1112,18 @@ class TutorialGerenciador {
 
             const btnConquistas = document.getElementById('btn-conquistas');
             if (btnConquistas) {
-                btnConquistas.style.position = 'relative';
-                btnConquistas.style.zIndex = '10001';
                 btnConquistas.classList.add('tutorial-destaque');
             }
 
             this.mostrarBalao(
-                "Incrível! Você completou o pedido e desbloqueou um item! 🔓 Veja o botão de <b>Conquistas</b> iluminado no painel direito.",
-                "left",
-                btnConquistas
+                "Excelente! Você desbloqueou um item! 🔓 Veja o botão de <b>Conquistas</b> no painel direito. Clique nele para ver seus itens desbloqueados!",
+                "down"
             );
         }
-        else if (this.passoAtual === 15) {
-            // Restaura o estilo do botão de conquistas do cabeçalho
-            const btnConquistas = document.getElementById('btn-conquistas');
-            if (btnConquistas) {
-                btnConquistas.style.zIndex = '';
-                btnConquistas.style.position = '';
-                btnConquistas.classList.remove('tutorial-destaque');
+        else if (this.passoAtual === 9) {
+            if (this.btn) {
+                this.btn.style.display = 'block';
+                this.btn.textContent = "Pronto para o desafio! Começar Jogo 🚀";
             }
 
             // Abre o modal automaticamente para o tutorial
@@ -1201,6 +1181,11 @@ class TutorialGerenciador {
         // setTimeout(() => {
         //     this.reposicionarBalao();
         // }, 50);
+
+        // Reposicionar o balão para o canto superior direito
+        setTimeout(() => {
+            this.reposicionarBalao();
+        }, 50);
 
         switch (this.passoAtualFase5) {
             case 1:
@@ -1563,6 +1548,24 @@ class TutorialGerenciador {
                 this.balao.style.transform = "none";
             }
         } 
+    }
+
+    reposicionarBalao() {
+        if (!this.balao) return;
+        const container = document.querySelector('.container');
+        if (container) {
+            const rect = container.getBoundingClientRect();
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Posiciona no canto superior direito do container
+            const top = rect.top + scrollTop + 20;
+            const left = rect.right + scrollLeft - 620; // 600px (max-width) + 20px de margem
+
+            this.balao.style.top = `${top}px`;
+            this.balao.style.left = `${left}px`;
+            this.balao.style.transform = "none";
+        }
     }
 
     reposicionarBalao() {

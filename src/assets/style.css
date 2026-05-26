@@ -461,7 +461,7 @@ button {
 .modal-conquistas {
     display: none;
     position: fixed;
-    z-index: 10005;
+    z-index: 9998;
     left: 0;
     top: 0;
     width: 100%;
@@ -815,24 +815,21 @@ button {
     background: rgba(0, 0, 0, 0.8);
     z-index: 9997;
     display: none;
-    pointer-events: auto; /* Bloqueia cliques no fundo */
+    pointer-events: none;   /* ⬅️ Permite interagir com o que está atrás */
 }
 
 .tutorial-destaque {
     position: relative !important;
     z-index: 9999 !important;
-    pointer-events: auto !important;
+    pointer-events: auto !important; /* Libera a viga para aceitar o mouse e o drag */
+    background-color: #ffffff !important; /* Faz a coluna "acender" visualmente */
     box-shadow: 0 0 30px rgba(255, 255, 255, 1) !important;
     cursor: pointer !important;
 }
 
-/* Bloqueia apenas elementos fora do tutorial */
-body:has(.tutorial-overlay[style*="display: block"]) 
-.left-panel button,
-body:has(.tutorial-overlay[style*="display: block"]) 
-.right-panel button,
-body:has(.tutorial-overlay[style*="display: block"]) 
-.bloco:not(.tutorial-destaque) {
+/* Garante que o resto dos elementos fiquem travados enquanto o tutorial estiver ativo */
+body:has(.tutorial-overlay[style*="display: block"]) button:not(#tutorial-btn),
+body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaque) {
     pointer-events: none !important;
     cursor: not-allowed !important;
 }
@@ -967,6 +964,7 @@ body:has(.tutorial-overlay[style*="display: block"])
 /* Container da Álgebra ao lado da viga */
 .tutorial-algebra {
     position: absolute;
+    pointer-events: auto;
     left: calc(100% + 20px);
     top: 50%;
     transform: translateY(-50%);
