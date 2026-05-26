@@ -821,15 +821,16 @@ button {
 .tutorial-destaque {
     position: relative !important;
     z-index: 9999 !important;
-    pointer-events: auto !important; /* Libera a viga para aceitar o mouse e o drag */
-    background-color: #ffffff !important; /* Faz a coluna "acender" visualmente */
+    pointer-events: auto !important; /* Libera a viga para aceitar o mouse e o drag */    
     box-shadow: 0 0 30px rgba(255, 255, 255, 1) !important;
     cursor: pointer !important;
 }
 
 /* Garante que o resto dos elementos fiquem travados enquanto o tutorial estiver ativo */
-body:has(.tutorial-overlay[style*="display: block"]) button:not(#tutorial-btn),
-body:has(.tutorial-overlay[style*="display: block"]) .bloco:not(.tutorial-destaque) {
+body:has(.tutorial-overlay[style*="display: block"]) 
+button:not(#tutorial-btn):not(#tutorial-pular-btn):not(.btn-validar):not(.btn-proxima),
+body:has(.tutorial-overlay[style*="display: block"]) 
+.bloco:not(.tutorial-destaque) {
     pointer-events: none !important;
     cursor: not-allowed !important;
 }
