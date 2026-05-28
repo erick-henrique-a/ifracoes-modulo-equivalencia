@@ -4,6 +4,7 @@ class JogoFracoes {
         this.faseAtual = 1;
         this.fasesCompletadas = 0;
         this.vigaAtual = [];
+        this.imagemAtualConclusao = 1;
 
 
         // Definição das fases (cada fase tem um alvo em frações)
@@ -212,6 +213,60 @@ class JogoFracoes {
             modal.style.display = 'none';
         }
     }
+
+    abrirModalConclusao() {
+        this.imagemAtualConclusao = 1;
+        const modal = document.getElementById('modal-conclusao');
+        if (modal) {
+            modal.style.display = 'block';
+            this.atualizarImagemConclusao();
+        }
+    }
+
+    fecharModalConclusao() {
+        const modal = document.getElementById('modal-conclusao');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    proximaImagemConclusao() {
+        if (this.imagemAtualConclusao < 6) {
+            this.imagemAtualConclusao++;
+            this.atualizarImagemConclusao();
+        }
+    }
+
+    atualizarImagemConclusao() {
+        const imagem = document.getElementById('conclusao-imagem');
+        const contador = document.getElementById('conclusao-contador');
+        const btnProxima = document.getElementById('btn-proxima-imagem');
+        
+        if (imagem) {
+            imagem.src = `/src/assets/${this.imagemAtualConclusao}.png`;
+        }
+        if (contador) {
+            contador.textContent = `${this.imagemAtualConclusao} / 6`;
+        }
+        if (btnProxima) {
+            if (this.imagemAtualConclusao >= 6) {
+                btnProxima.style.display = 'none';
+            } else {
+                btnProxima.style.display = 'block';
+            }
+        }
+    }
+
+    reiniciarJogo() {
+        this.faseAtual = 1;
+        this.fasesCompletadas = 0;
+        this.vigaAtual = [];
+        this.fracoesDesbloqueadas.clear();
+        this.criarEstruturaInicialDesbloqueios();
+        this.renderizarBlocos();
+        this.renderizarDesbloqueios();
+        this.atualizarUI();
+    }
     dispararAnimacaoConquistaAutomatica(chaveFracao) {
         // 1. Destaca o botão "Conquistas" do cabeçalho/jogo
         const btnConquistas = document.getElementById('btn-conquistas') || document.querySelector('.btn-conquistas');
@@ -304,7 +359,7 @@ class JogoFracoes {
                 setTimeout(() => this.tutorial.iniciar(), 100);
             }
         } else {
-            alert('🎉 Parabéns! Você completou todas as fases!');
+            this.abrirModalConclusao();
             this.faseAtual = 1;
             this.fasesCompletadas = 0;
             this.vigaAtual = [];
