@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Construtor de Colunas - Jogo de Frações</title>
-    <link rel="stylesheet" href="/style/style.css">
-    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="stylesheet" href="/src/style/style.css">
+    <link rel="icon" type="image/x-icon" href="/src/assets/img/favicon.ico">
 </head>
 <body>
 
@@ -20,8 +20,8 @@
             <button class="btn-teste-geral" onclick="game.testarTutorial(5)">Testar Tutorial F5</button> -->
 
                 <!--HABILITAR AO IMPLEMENTAR O TUTORIAL FASE 18 E REVISÃO FINAL
-            <button class="btn-teste-geral" onclick="game.testarTutorial(18)">Testar Tutorial F18</button>
-            <button class="btn-teste-geral" onclick="game.testarTutorial(25)">Testar Revisão</button> -->                     
+            <button class="btn-teste-geral" onclick="game.testarTutorial(18)">Testar Tutorial F18</button>--> 
+            <button class="btn-teste-geral" onclick="game.testarTutorial(40)">Testar Revisão</button>                     
             
             <div class="blocos-container" id="blocos-container">               
         
@@ -63,7 +63,7 @@
                 </div>
                 <button class="btn-conquistas" id="btn-conquistas" onclick="game.abrirModalConquistas()">🔓 Conquistas</button>
             </div>  
-            <img src="/assets/img/assistente.png" alt="Assistente" class="engenheiro">
+            <img src="/src/assets/img/assistente.png" alt="Assistente" class="engenheiro">
             <div class="marcadores" id="marcadores">
                 <!-- Marcadores serão inseridos aqui -->
             </div> 
@@ -75,7 +75,7 @@
 
 
 
-    <script src="/js/script.js"></script>
+    <script src="/src/js/script.js"></script>
 
     <!-- MODAL DE CONQUISTAS -->
     <div id="modal-conquistas" class="modal-conquistas">
@@ -103,6 +103,27 @@
                 <button class="btn-proxima" id="btn-proxima-validacao" onclick="game.proximaFase(); game.fecharModalValidacao();">✓ Próxima Fase</button>
                 <button class="btn-limpar-validacao" id="btn-limpar-validacao" onclick="game.limpar(); game.fecharModalValidacao();">Tente Novamente!</button>
             </div>
+        </div>
+    </div>
+
+        <!-- MODAL DE CONCLUSÃO -->
+    <div id="modal-conclusao" class="modal-conclusao">
+        <div class="modal-conclusao-content">
+            <button class="modal-fechar" onclick="game.fecharModalConclusao()">
+                &times;
+            </button>
+
+            <img id="conclusao-imagem" src="assets/img/1.png" alt="Conclusão">
+
+            <div id="conclusao-contador">1 / 6</div>
+
+            <button id="btn-proxima-imagem" onclick="game.proximaImagemConclusao()">
+                Próxima
+            </button>
+
+            <button onclick="game.fecharModalConclusao(); game.reiniciarJogo();">
+                Jogar novamente
+            </button>
         </div>
     </div>
 

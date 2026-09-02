@@ -243,7 +243,7 @@ class JogoFracoes {
         const btnProxima = document.getElementById('btn-proxima-imagem');
 
         if (imagem) {
-            imagem.src = `/src/assets/${this.imagemAtualConclusao}.png`;
+            imagem.src = `assets/img/${this.imagemAtualConclusao}.png`;
         }
         if (contador) {
             contador.textContent = `${this.imagemAtualConclusao} / 6`;
@@ -360,11 +360,12 @@ class JogoFracoes {
             }
         } else {
             this.abrirModalConclusao();
-            this.faseAtual = 1;
-            this.fasesCompletadas = 0;
-            this.vigaAtual = [];
-            this.renderizarBlocos();
-            this.atualizarUI();
+            return;
+           // this.faseAtual = 1;
+           // this.fasesCompletadas = 0;
+           // this.vigaAtual = [];
+           // this.renderizarBlocos();
+           // this.atualizarUI();
         }
         // ---------- TUTORIAL FASE 1 ----------
         if (

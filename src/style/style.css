@@ -96,7 +96,7 @@ body {
     color: white;
     padding: 12px 18px;
     border-radius: 9px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -1286,10 +1286,13 @@ html, body, .container {
     border-radius: 15px;
     border: 2px solid #667eea;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    max-width: 700px;
-    width: 90%;
+    max-width: 1100px;
+    max-height: 95vh;
+    width: 95%;
     position: relative;
     animation: slideDownModal 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .conclusao-titulo {
@@ -1299,9 +1302,18 @@ html, body, .container {
     margin-bottom: 30px;
     text-align: center;
 }
+#conclusao-imagem {
+    display: block;
+    max-width: 120%;
+    max-height: 800px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin: 20px auto;
+}
 
 .conclusao-imagem-container {
-    width: 100%;
+    width: 130%;
     height: 450px;
     background: #f8f9fa;
     border: 2px solid #e2e8f0;
